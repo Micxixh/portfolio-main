@@ -1,0 +1,930 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;1,400&display=swap");
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+
+  /* Spacing system - 8px base scale */
+  --space-0: 0px;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-8: 64px;
+  --space-9: 72px;
+  --space-10: 80px;
+  --space-12: 96px;
+  --space-15: 120px;
+  --space-20: 160px;
+
+  /* Layout-specific spacing */
+  --header-height: 80px;
+  --header-padding-top: var(--space-12);
+  --content-padding-x: var(--space-6);
+  --content-padding-y: var(--space-8);
+  --section-gap: var(--space-3);
+  --element-gap: var(--space-2);
+
+  /* Mobile-specific spacing */
+  --mobile-content-padding-x: var(--space-2);
+  --mobile-content-padding-y: var(--space-3);
+  --mobile-header-height: 70px;
+  --mobile-section-gap: var(--space-2);
+  --mobile-element-gap: var(--space-1);
+
+  /* Typography variables */
+  --text-h1: 48px;
+  --text-h2: 48px;
+  --text-h3: 36px;
+  --text-h4: 24px;
+  --text-h5: 28px;
+  --text-h6: 20px;
+  --text-base: 16px;
+  --text-sm: 14px;
+
+  /* Header-specific typography */
+  --header-name-size: 32px;
+  --header-title-size: 20px;
+
+  --font-weight-bold: 700;
+  --font-weight-semibold: 600;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --font-weight-light: 300;
+  --font-family-inter: "Inter", sans-serif;
+  --font-family-roboto-mono: "Roboto Mono", monospace;
+
+  /* Body text specific weight */
+  --text-body-light: var(--font-weight-light);
+
+  /* Border and visual system */
+  --border-width: 1px;
+  --border-color: #000000;
+  --bg-primary: #fafafa;
+  --bg-dark: #131313;
+  --text-primary: #000000;
+  --text-inverse: #ffffff;
+
+  /* The default background color for the application. */
+  --background: rgba(255, 255, 255, 1);
+  /* The default color for elements or text that appears on top of the background. */
+  --foreground: rgba(0, 0, 0, 1);
+  /* The background color for cards, modals, and other containers. */
+  --card: rgba(19, 19, 19, 1);
+  /* The default color for text or elements that appear on top of cards, modals and other background containers. */
+  --card-foreground: rgba(255, 255, 255, 1);
+  /* The background color for dropdowns and tooltips. */
+  --popover: rgba(19, 19, 19, 1);
+  /* The default color for text or elements that appear on top of dropdowns and tooltips. */
+  --popover-foreground: rgba(255, 255, 255, 1);
+  /* The primary color used for buttons, links, and other interactive elements. */
+  --primary: rgba(19, 19, 19, 1);
+  /* The default color for text or elements that appear on top of primary colored elements. */
+  --primary-foreground: rgba(255, 255, 255, 1);
+  /* The secondary color used for secondary(but NOT-DESTRUCTIVE) buttons and interactive elements. */
+  --secondary: rgba(29, 29, 29, 1);
+  /* The default color for text or elements that appear on top of secondary colored elements. */
+  --secondary-foreground: rgba(255, 255, 255, 1);
+  /* The muted color used for less prominent elements, such as disabled buttons or disabled text. */
+  --muted: rgba(0, 0, 0, 0);
+  /* The default color for text or elements that appear on top of muted colored elements. */
+  --muted-foreground: rgba(128, 128, 128, 1);
+  /* The accent color used for highlights, links, and other interactive elements. */
+  --accent: rgba(19, 19, 19, 1);
+  /* The default color for text or elements that appear on top of accent colored elements. */
+  --accent-foreground: rgba(255, 255, 255, 1);
+  /* The color used for background in destructive actions, such as delete buttons or error messages. */
+  --destructive: rgba(0, 0, 0, 0);
+  /* The default color for text or elements that appear on top of destructive colored elements. */
+  --destructive-foreground: rgba(255, 255, 255, 1);
+  /* The default border color for elements such as inputs, buttons, and other containers. */
+  --border: rgba(0, 0, 0, 1);
+  /* The default background color for input fields once the text has been filled. Should be either transparent or match the input-background. */
+  --input: rgba(19, 19, 19, 1);
+  /* The default background color for input fields, text areas, and other input elements. */
+  --input-background: rgba(19, 19, 19, 1);
+  /* The color for focus rings, outlines, and other focus indicators. */
+  --ring: rgba(19, 19, 19, 1);
+  /* Shadow for small elevations, such as cards or modals. */
+  --elevation-sm: 0 1px 3px rgba(0, 0, 0, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.24);
+  /* The color for chart elements, such as a bar or line in a chart. */
+  --chart-1: rgba(19, 19, 19, 1);
+  /* The color for another chart element, such as a bar or line in a chart. */
+  --chart-2: rgba(29, 29, 29, 1);
+  /* The color for another chart element, such as a bar or line in a chart. */
+  --chart-3: rgba(64, 64, 64, 1);
+  /* The color for another chart element, such as a bar or line in a chart. */
+  --chart-4: rgba(96, 96, 96, 1);
+  /* The color for another chart element, such as a bar or line in a chart. */
+  --chart-5: rgba(128, 128, 128, 1);
+  /* The default border radius for elements such as buttons, tooltip, and other containers. */
+  --radius: 0px;
+  /* The background color for sidebars, navigation menus, and other persistent elements. */
+  --sidebar: rgba(19, 19, 19, 1);
+  /* The default color for text or elements that appear on top of sidebars, navigation menus, and other persistent elements. */
+  --sidebar-foreground: rgba(255, 255, 255, 1);
+  /* The primary color used for buttons, links, and other interactive elements in sidebars and navigation menus. */
+  --sidebar-primary: rgba(19, 19, 19, 1);
+  /* The default color for text or elements that appear on top of primary colored elements in sidebars and navigation menus. */
+  --sidebar-primary-foreground: rgba(255, 255, 255, 1);
+  /* The accent color used for highlights, links, and other interactive elements in sidebars and navigation menus. */
+  --sidebar-accent: rgba(29, 29, 29, 1);
+  /* The default color for text or elements that appear on top of accent colored elements in sidebars and navigation menus. */
+  --sidebar-accent-foreground: rgba(255, 255, 255, 1);
+  /* The default border color for elements in sidebars and navigation menus. */
+  --sidebar-border: rgba(0, 0, 0, 1);
+  /* The default color for focus rings, outlines, and other focus indicators in sidebars and navigation menus. */
+  --sidebar-ring: rgba(19, 19, 19, 1);
+}
+
+.dark {
+  --background: rgba(19, 19, 19, 1);
+  --foreground: rgba(255, 255, 255, 1);
+  --card: rgba(0, 0, 0, 1);
+  --card-foreground: rgba(255, 255, 255, 1);
+  --popover: rgba(0, 0, 0, 1);
+  --popover-foreground: rgba(255, 255, 255, 1);
+  --primary: rgba(255, 255, 255, 1);
+  --primary-foreground: rgba(0, 0, 0, 1);
+  --secondary: rgba(64, 64, 64, 1);
+  --secondary-foreground: rgba(255, 255, 255, 1);
+  --muted: rgba(29, 29, 29, 1);
+  --muted-foreground: rgba(160, 160, 160, 1);
+  --accent: rgba(255, 255, 255, 1);
+  --accent-foreground: rgba(0, 0, 0, 1);
+  --destructive: rgba(220, 38, 38, 1);
+  --destructive-foreground: rgba(255, 255, 255, 1);
+  --border: rgba(64, 64, 64, 1);
+  --input: rgba(29, 29, 29, 1);
+  --ring: rgba(255, 255, 255, 1);
+  --chart-1: rgba(255, 255, 255, 1);
+  --chart-2: rgba(200, 200, 200, 1);
+  --chart-3: rgba(160, 160, 160, 1);
+  --chart-4: rgba(96, 96, 96, 1);
+  --chart-5: rgba(64, 64, 64, 1);
+  --sidebar: rgba(0, 0, 0, 1);
+  --sidebar-foreground: rgba(255, 255, 255, 1);
+  --sidebar-primary: rgba(255, 255, 255, 1);
+  --sidebar-primary-foreground: rgba(0, 0, 0, 1);
+  --sidebar-accent: rgba(64, 64, 64, 1);
+  --sidebar-accent-foreground: rgba(255, 255, 255, 1);
+  --sidebar-border: rgba(64, 64, 64, 1);
+  --sidebar-ring: rgba(255, 255, 255, 1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(
+    --sidebar-primary-foreground
+  );
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(
+    --sidebar-accent-foreground
+  );
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Custom spacing utilities */
+  --spacing-xs: var(--space-1);
+  --spacing-sm: var(--space-2);
+  --spacing-md: var(--space-3);
+  --spacing-lg: var(--space-4);
+  --spacing-xl: var(--space-6);
+  --spacing-2xl: var(--space-8);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    background-color: #fafafa;
+  }
+}
+
+/* GLOBAL SCROLLBAR HIDING - Applied to all elements */
+* {
+  /* Hide scrollbar for webkit browsers (Chrome, Safari, Edge) */
+  -webkit-scrollbar: none !important;
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* Internet Explorer and Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Ensure scrolling functionality is preserved */
+html,
+body {
+  overflow-x: hidden !important;
+}
+
+/* Specific scrollable elements maintain their scrolling capability */
+.scrollable {
+  overflow-y: auto !important;
+}
+
+/* Global hide scrollbar utility class */
+.hide-scrollbar {
+  -webkit-scrollbar: none !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* BLEND MODE SYSTEM - Outside of @layer for proper specificity */
+.blend-difference {
+  mix-blend-mode: difference !important;
+  color: #ffffff !important; /* Start white, invert to black over dark backgrounds */
+  position: relative; /* Ensure proper stacking context for blend mode */
+  isolation: isolate; /* Create stacking context */
+}
+
+h1 {
+  font-family: var(--font-family-inter);
+  font-size: var(--text-h1);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+h2 {
+  font-family: var(--font-family-inter);
+  font-size: var(--text-h2);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+h3 {
+  font-family: var(--font-family-inter);
+  font-size: var(--text-h3);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+h4 {
+  font-family: var(--font-family-inter);
+  font-size: var(--text-h4);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+h5 {
+  font-family: var(--font-family-roboto-mono);
+  font-size: var(--text-h5);
+  font-weight: var(--font-weight-medium);
+  text-transform: none;
+  line-height: 1.5;
+}
+
+h6 {
+  font-family: var(--font-family-roboto-mono);
+  font-size: var(--text-h6);
+  font-weight: var(--font-weight-normal);
+  text-transform: none;
+  line-height: 1.5;
+}
+
+p {
+  font-family: var(--font-family-roboto-mono);
+  font-size: var(--text-base);
+  font-weight: var(--text-body-light);
+  line-height: 1.5;
+}
+
+span {
+  font-family: var(--font-family-roboto-mono);
+  font-size: var(--text-base);
+  font-weight: var(--text-body-light);
+  line-height: 1.5;
+}
+
+label {
+  font-family: var(--font-family-roboto-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-normal);
+  line-height: 1.5;
+}
+
+button {
+  font-family: var(--font-family-inter);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+}
+
+input {
+  font-family: var(--font-family-roboto-mono);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-normal);
+  line-height: 1.5;
+}
+
+html {
+  font-size: var(--font-size);
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 767px) {
+  /* Adjust base font sizes for mobile */
+  :root {
+    --text-h1: 32px;
+    --text-h2: 32px;
+    --text-h3: 24px;
+    --text-h4: 20px;
+    --text-h5: 18px;
+    --text-h6: 16px;
+    --text-base: 14px;
+    --text-sm: 12px;
+  }
+
+  /* Mobile navigation - use h3 styling instead of h2 */
+  .mobile-nav-row h2 {
+    font-family: var(--font-family-inter) !important;
+    font-size: var(--text-h3) !important;
+    font-weight: var(--font-weight-medium) !important;
+    text-transform: uppercase !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Mobile projects grid - single column */
+  .mobile-projects-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-3) !important;
+  }
+
+  /* Mobile portrait image sizing - more conservative height */
+  .mobile-portrait {
+    height: 40vh !important;
+    max-height: 300px !important;
+    width: 100% !important;
+  }
+
+  /* Mobile hero text - improved spacing and centering */
+  .mobile-hero-text {
+    padding: var(--space-3) var(--mobile-content-padding-x) !important;
+    text-align: center !important;
+  }
+
+  /* Mobile navigation section - improved spacing */
+  .mobile-navigation {
+    padding: var(--space-2) var(--mobile-content-padding-x)
+      var(--space-4) var(--mobile-content-padding-x) !important;
+    gap: var(--space-2) !important;
+  }
+
+  /* Mobile homepage container - vertical centering */
+  .mobile-homepage-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: calc(
+      100vh - var(--mobile-header-height)
+    ) !important;
+    padding: var(--space-3) 0 !important;
+  }
+
+  /* Mobile portrait image - centered with proper spacing */
+  .mobile-portrait {
+    height: 35vh !important;
+    max-height: 280px !important;
+    width: 100% !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Mobile hero text - centered within layout */
+  .mobile-hero-text {
+    flex-shrink: 0 !important;
+    text-align: center !important;
+  }
+
+  /* Mobile navigation container - positioned at bottom of centered content */
+  .mobile-navigation {
+    flex-shrink: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Mobile about section */
+  .mobile-about {
+    padding: var(--space-12) var(--mobile-content-padding-x)
+      var(--mobile-content-padding-y) !important;
+  }
+
+  /* Mobile content areas */
+  .mobile-content {
+    padding-left: var(--mobile-content-padding-x) !important;
+    padding-right: var(--mobile-content-padding-x) !important;
+  }
+
+  /* Mobile Projects page - enable full page scrolling with generous top spacing */
+  .projects-page-mobile {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow-y: visible !important;
+    padding-top: calc(
+      var(--mobile-header-height) + var(--space-6)
+    ) !important; /* 70px + 48px = 118px total spacing */
+  }
+
+  /* App container mobile scrolling for projects */
+  .mobile-projects-scroll {
+    overflow-y: auto !important;
+    height: auto !important;
+    min-height: 100vh !important;
+
+    /* Hide scrollbar for webkit browsers */
+    -webkit-scrollbar: none !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  /* Hide scrollbar for projects page */
+  .mobile-projects-scroll::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  /* Mobile About accordion container - only this scrolls */
+  .mobile-about-accordion-container {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important; /* Smooth scrolling on iOS */
+    height: calc(
+      100vh - var(--space-12) -
+        var(--mobile-content-padding-y) - 72px
+    ) !important;
+
+    /* Hide scrollbar for webkit browsers */
+    -webkit-scrollbar: none !important;
+
+    /* Hide scrollbar for Firefox */
+    scrollbar-width: none !important;
+
+    /* Hide scrollbar for IE/Edge */
+    -ms-overflow-style: none !important;
+  }
+
+  /* Additional webkit scrollbar hiding */
+  .mobile-about-accordion-container::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  /* Ensure accordion content within scrollable container has proper spacing */
+  .mobile-about-accordion-container > div {
+    padding-bottom: var(
+      --space-6
+    ) !important; /* Extra bottom padding for better UX */
+  }
+
+  /* Mobile nav row adjustments */
+  .mobile-nav-row {
+    padding-bottom: 6px !important;
+    padding-top: 6px !important;
+    padding-left: var(--space-2) !important;
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  /* Mobile header adjustments */
+  .mobile-header {
+    height: var(--mobile-header-height) !important;
+    padding-top: var(--space-2) !important;
+    padding-bottom: var(--space-2) !important;
+  }
+
+  /* Mobile header name sizing */
+  .mobile-header-name {
+    font-size: 24px !important; /* Smaller on mobile */
+  }
+
+  /* Mobile project cards */
+  .mobile-project-card {
+    margin-bottom: var(--space-3) !important;
+  }
+
+  /* Mobile Contact page specific adjustments */
+  .contact-page-container {
+    padding-top: calc(
+      var(--mobile-header-height) + var(--space-6)
+    ) !important; /* 70px + 48px = 118px total spacing */
+    padding-left: var(--mobile-content-padding-x) !important;
+    padding-right: var(--mobile-content-padding-x) !important;
+    padding-bottom: var(--mobile-content-padding-y) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* Mobile contact form - maintain border styling */
+  .mobile-contact-form {
+    border-right: none !important;
+    border-bottom: var(--border-width) solid var(--border-color) !important;
+    padding-right: 0 !important;
+    padding-bottom: var(--space-6) !important;
+    margin-bottom: var(--space-6) !important;
+    width: 100% !important;
+  }
+
+  /* Mobile contact details - maintain spacing and stacked layout */
+  .mobile-contact-details {
+    padding-left: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Mobile contact details - navigation style stacked */
+  .mobile-contact-details > div > div:last-child {
+    flex-direction: column !important;
+    gap: 0 !important;
+  }
+
+  /* Mobile About accordion spacing */
+  .mobile-about .accordion-item {
+    margin-bottom: var(--space-2) !important;
+  }
+
+  /* Mobile What I Do table - stack service name above description */
+  .mobile-service-title {
+    margin-bottom: var(--space-1) !important;
+  }
+
+  /* Remove margin on desktop */
+  @media (min-width: 768px) {
+    .mobile-service-title {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  /* Mobile About page specific adjustments */
+  @media (max-width: 767px) {
+    /* Mobile About container - no page scrolling */
+    .mobile-about {
+      overflow: hidden !important;
+      height: 100vh !important;
+    }
+
+    /* Mobile About page container - adjust top padding for mobile header */
+    .mobile-about-page-container {
+      padding-top: calc(
+        var(--mobile-header-height) + var(--space-6)
+      ) !important; /* 70px + 48px = 118px total spacing */
+    }
+
+    /* Mobile About content area - adjust for single column layout */
+    .mobile-about-content-area {
+      width: 100% !important;
+      padding: var(--space-4) var(--mobile-content-padding-x)
+        var(--mobile-content-padding-y) !important;
+    }
+
+    /* Mobile About title spacing - create balanced spacing around h1 */
+    .mobile-about-content-area > div:first-child {
+      padding-bottom: var(--space-4) !important;
+      margin-bottom: var(--space-4) !important;
+      margin-top: var(--space-2) !important;
+    }
+
+    /* Hide portrait on mobile About page */
+    .mobile-about-page-container > div:first-child {
+      display: none !important;
+    }
+
+    /* Mobile About accordion container - only element that scrolls */
+    .mobile-about-accordion-container {
+      height: calc(
+        100vh - var(--mobile-header-height) - var(--space-12) -
+          72px - var(--mobile-content-padding-y)
+      ) !important;
+      max-height: calc(
+        100vh - var(--mobile-header-height) - var(--space-12) -
+          72px - var(--mobile-content-padding-y)
+      ) !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
+
+    /* Ensure mobile About title block is properly sized */
+    .mobile-about h1 {
+      margin-bottom: var(--space-2) !important;
+    }
+
+    /* Mobile About title container spacing - match desktop proportions */
+    .mobile-about .motion-div:first-of-type {
+      margin-bottom: var(--space-3) !important;
+      padding-bottom: var(--space-3) !important;
+    }
+
+    /* About accordion mobile adjustments */
+    .mobile-about .space-y-0 > div {
+      margin-bottom: var(--space-1) !important;
+    }
+
+    /* Prevent any horizontal scrolling */
+    .mobile-about * {
+      overflow-x: hidden !important;
+    }
+  }
+
+  /* Mobile project title adjustments */
+  .mobile-projects-grid h3 {
+    font-size: var(--text-h4) !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Mobile project info adjustments */
+  .mobile-project-card h4 {
+    font-size: var(--text-sm) !important;
+    margin-bottom: var(--space-1) !important;
+  }
+
+  /* Ensure proper scrolling on mobile for all pages */
+  body {
+    overflow-x: hidden !important;
+  }
+
+  /* Prevent horizontal scrolling on all elements */
+  * {
+    overflow-x: hidden;
+  }
+
+  /* Specific mobile viewport handling */
+  html,
+  body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+
+  /* Utility class for hiding scrollbars while maintaining scrolling */
+  .hide-scrollbar {
+    -webkit-scrollbar: none !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  /* Ensure all scrollable areas are invisible */
+  .mobile-projects-scroll,
+  .mobile-about-accordion-container {
+    -webkit-scrollbar: none !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  .mobile-projects-scroll::-webkit-scrollbar,
+  .mobile-about-accordion-container::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  /* Mobile Project Detail Images - preserve aspect ratio and hug content height */
+  /* Override object-cover images specifically in project detail pages to use object-contain on mobile */
+  [data-project-detail] .object-cover,
+  .project-detail-container .object-cover {
+    object-fit: contain !important;
+  }
+
+  /* Mobile touchpoint layout - stack vertically instead of side-by-side */
+  .mobile-touchpoint-layout {
+    display: block !important;
+  }
+
+  .mobile-touchpoint-content {
+    margin-bottom: var(--space-6) !important;
+  }
+
+  .mobile-touchpoint-carousel {
+    width: 100% !important;
+    max-width: 400px !important;
+    margin: 0 auto !important;
+  }
+
+  /* Mobile touchpoint section spacing */
+  .mobile-touchpoint-section {
+    margin-bottom: var(--space-10) !important;
+  }
+
+  /* Mobile Project Detail Image Containers - hug content height */
+  .project-detail-image-container {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Mobile Project Detail Images - ensure all use auto height */
+  [data-project-detail] img,
+  .project-detail-container img {
+    height: auto !important;
+  }
+
+  /* Mobile viewport adjustments */
+  .mobile-viewport {
+    min-height: 100vh !important;
+    min-height: 100dvh !important; /* Dynamic viewport height for mobile browsers */
+  }
+
+  /* Mobile homepage specific adjustments */
+  .mobile-homepage-centered {
+    height: 100vh !important;
+    height: 100dvh !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Ensure mobile portrait doesn't grow too large on very tall screens */
+  @media (max-height: 600px) {
+    .mobile-portrait {
+      height: 30vh !important;
+      max-height: 200px !important;
+    }
+
+    .mobile-homepage-container {
+      min-height: calc(
+        100vh - var(--mobile-header-height)
+      ) !important;
+      padding: var(--space-2) 0 !important;
+    }
+  }
+
+  /* Very tall mobile screens - prevent over-spacing */
+  @media (min-height: 900px) {
+    .mobile-portrait {
+      height: 30vh !important;
+      max-height: 350px !important;
+    }
+
+    .mobile-homepage-container {
+      justify-content: center !important;
+    }
+  }
+}
+
+/* Desktop Projects page spacing */
+@media (min-width: 768px) {
+  .projects-page-mobile {
+    padding-top: var(
+      --space-15
+    ) !important; /* 120px - proper desktop header spacing */
+  }
+
+  .projects-page-title {
+    margin-bottom: var(
+      --space-8
+    ) !important; /* 64px - better desktop spacing */
+  }
+
+  /* Desktop Contact page - override mobile settings */
+  .contact-page-container {
+    padding-top: calc(
+      var(--header-height) + var(--space-2)
+    ) !important; /* 86px + 16px = 102px - much closer to header */
+    padding-left: var(--content-padding-x) !important;
+    padding-right: var(--content-padding-x) !important;
+    padding-bottom: var(--content-padding-y) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* Desktop Contact form - remove side borders, maintain bottom border */
+  .mobile-contact-form {
+    padding-right: 0 !important;
+    border-right: none !important;
+    border-bottom: var(--border-width) solid var(--border-color) !important;
+    padding-bottom: var(--space-6) !important;
+    margin-bottom: var(--space-6) !important;
+    width: 100% !important;
+  }
+
+  /* Desktop Contact details - navigation style layout */
+  .mobile-contact-details {
+    padding-left: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Desktop contact details navigation layout */
+  .mobile-contact-details > div {
+    width: 100% !important;
+  }
+}
+
+/* Extra small screens (smaller phones) */
+@media (max-width: 375px) {
+  :root {
+    --mobile-content-padding-x: var(--space-1);
+    --text-h3: 20px;
+    --text-h4: 18px;
+    --text-base: 13px;
+  }
+
+  .mobile-portrait {
+    height: 35vh !important;
+    max-height: 250px !important;
+  }
+
+  .mobile-navigation {
+    gap: 4px !important;
+  }
+
+  .mobile-nav-row {
+    min-height: 40px !important;
+    padding-left: var(--space-1) !important;
+  }
+
+  /* Mobile hamburger menu specific styles */
+  .mobile-hamburger-menu {
+    z-index: 250 !important;
+  }
+
+  /* Ensure mobile menu text uses proper mobile sizing */
+  .mobile-hamburger-menu h2 {
+    font-family: var(--font-family-inter) !important;
+    font-size: var(--text-h3) !important;
+    font-weight: var(--font-weight-medium) !important;
+    text-transform: uppercase !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Mobile menu overlay adjustments */
+  .mobile-menu-overlay {
+    backdrop-filter: blur(2px) !important;
+  }
+
+  /* Mobile hamburger menu positioning */
+  .mobile-hamburger-button {
+    position: relative !important;
+    z-index: 150 !important;
+  }
+
+  /* Mobile menu button sizing for homepage */
+  .mobile-menu-button {
+    min-height: 44px !important;
+    min-width: 44px !important;
+    padding: var(--space-2) !important;
+  }
+
+  /* Mobile navigation rows in hamburger menu */
+  .mobile-hamburger-menu .mobile-nav-row {
+    min-height: 56px !important;
+    padding: var(--space-2) var(--space-3) !important;
+    border-bottom: var(--border-width) solid var(--border-color) !important;
+  }
+}
