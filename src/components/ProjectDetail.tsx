@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, color } from "motion/react";
 import { useState, useEffect, useMemo, useCallback } from "react";
 import {
   ArrowLeft,
@@ -34,7 +34,7 @@ export default function ProjectDetail({
 }: ProjectDetailProps) {
   const [expandedPrototype, setExpandedPrototype] = useState(false);
   const [expandedVideo, setExpandedVideo] = useState(false);
-  const [expandedDeliverables, setExpandedDeliverables] = useState<Set<number>>(new Set());
+  const [expandedDeliverables, setExpandedDeliverables] = useState(new Set<number>());
   const [showComparisonModal, setShowComparisonModal] = useState(false);
 
   // Memoize calculations to prevent re-renders
@@ -376,6 +376,34 @@ export default function ProjectDetail({
               className="w-full h-auto md:h-full object-contain md:object-cover"
             />
           </div>
+          {/* Quick Links Navigation */}
+          <div
+            className="flex flex-wrap gap-4 justify-center mb-[var(--space-8)] px-4"
+            style={{ marginBottom: "var(--space-8)", }}
+          >
+            {[
+              { label: "Research", target: "#research" },
+              { label: "Ideation", target: "#ideation" },
+              { label: "Execution", target: "#execution" },
+              { label: "Impact", target: "#impact" },
+            ].map((link) => (
+              <a
+                key={link.target}
+                href={link.target}
+                className="px-4 py-2 border border-var(--border-color) bg-black font-roboto-mono text-sme hover:bg-var(--text-primary) hover:text-var(--text-inverse) transition-colors"
+                style={{
+                  color: "white",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                  cursor: "pointer",
+                  padding: "var(--space-2) var(--space-4)",
+                }}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+
         </motion.section>
 
         {/* 2. Context / Overview */}
@@ -495,6 +523,7 @@ export default function ProjectDetail({
 
         {/* 3. Research & Discovery */}
         <motion.section
+          id="research"
           style={{ marginBottom: "var(--space-12)" }}
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -551,7 +580,6 @@ export default function ProjectDetail({
             <div
               style={{
                 padding: "var(--space-4)",
-                borderBottom: "var(--border-width) solid var(--border-color)",
                 display: "flex",
                 flexDirection: "row",
                 gap: "var(--space-2)",
@@ -613,7 +641,7 @@ export default function ProjectDetail({
 
 
           <motion.section
-            style={{ marginBottom: "var(--space-12)", border: "var(--border-width) solid var(--border-color)" }}
+            style={{ marginBottom: "var(--space-12)" }}
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{
@@ -646,160 +674,174 @@ export default function ProjectDetail({
                 </div>
 
                 {/* Strategic Insights Section */}
-                <div
-                  style={{
-                    padding: "var(--space-6)",
-                  }}
-                >
+                <div className="px-0 md:px-[var(--space-6)]">
+  {/* Heading above insights */}
+  <h3
+    style={{
+      fontFamily: "var(--font-family-roboto-mono)",
+      fontSize: "var(--text-lg)",
+      fontWeight: "var(--font-weight-semibold)",
+      color: "#ffffff",
+      margin: 0,
+    }}
+  >
+    Strategic Insights
+  </h3>
 
-                  <div className="space-y-4">
-                    {projectData.research.strategicInsights && projectData.research.strategicInsights.length > 0 ? (
-                      projectData.research.strategicInsights.map((insight, index) => (
-                        <div
-                          key={index}
-                          style={{
-                            padding: "var(--space-4)",
-                            backgroundColor: "#131313",
-                            border: "var(--border-width) solid var(--border-color)",
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              marginBottom: "var(--space-2)",
-                            }}
-                          >
-                            <h6
-                              style={{
-                                fontFamily: "var(--font-family-roboto-mono)",
-                                fontSize: "var(--text-base)",
-                                fontWeight: "var(--font-weight-normal)",
-                                color: "#ffffff",
-                                margin: 0,
-                              }}
-                            >
-                              Insight 0{index + 1}
-                            </h6>
-                          </div>
-                          <p
-                            style={{
-                              fontFamily: "var(--font-family-roboto-mono)",
-                              fontSize: "var(--text-base)",
-                              fontWeight: "var(--font-weight-light)",
-                              color: "#ffffff",
-                              margin: 0,
-                              lineHeight: "1.6",
-                            }}
-                          >
-                            {insight || "Analysis details will be displayed here when data is available."}
-                          </p>
-                        </div>
-                      ))
-                    ) : (
-                      // Default insights when no project data available
-                      [
-                        {
-                          title: "User Experience Gaps",
-                          description: projectData.research.keyFindings || "User research revealed critical pain points in the current workflow and opportunities for streamlined interactions that reduce cognitive load.",
-                          impact: "high",
-                        },
-                        {
-                          title: "Competitive Positioning",
-                          description: "Analysis identified market opportunities for differentiation through clearer information architecture and more intuitive user flows.",
-                          impact: "medium",
-                        },
-                        {
-                          title: "Design Strategy Impact",
-                          description: projectData.research.designImplications || "These insights directly informed our design principles of clarity, consistency, and efficiency, ensuring user needs remained central to all design decisions.",
-                          impact: "high",
-                        },
-                      ].map((insight, index) => (
-                        <div
-                          key={index}
-                          style={{
-                            padding: "var(--space-4)",
-                            backgroundColor: "#131313",
-                            border: "var(--border-width) solid var(--border-color)",
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              marginBottom: "var(--space-2)",
-                            }}
-                          >
-                            <h6
-                              style={{
-                                fontFamily: "var(--font-family-roboto-mono)",
-                                fontSize: "var(--text-base)",
-                                fontWeight: "var(--font-weight-normal)",
-                                color: "#ffffff",
-                                margin: 0,
-                              }}
-                            >
-                              {insight.title}
-                            </h6>
-                            <span
-                              style={{
-                                fontFamily: "var(--font-family-roboto-mono)",
-                                fontSize: "var(--text-sm)",
-                                fontWeight: "var(--font-weight-normal)",
-                                color:
-                                  insight.impact === "high"
-                                    ? "#ffffff"
-                                    : insight.impact === "medium"
-                                      ? "#cccccc"
-                                      : "#999999",
-                                textTransform: "uppercase",
-                                letterSpacing: "0.05em",
-                              }}
-                            >
-                              {insight.impact} Impact
-                            </span>
-                          </div>
-                          <p
-                            style={{
-                              fontFamily: "var(--font-family-roboto-mono)",
-                              fontSize: "var(--text-base)",
-                              fontWeight: "var(--font-weight-light)",
-                              color: "#ffffff",
-                              margin: 0,
-                              lineHeight: "1.6",
-                            }}
-                          >
-                            {insight.description}
-                          </p>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </div>
+  {/* Added margin-top here */}
+  <div className="mt-[var(--space-6)] space-y-4">
+    {projectData.research.strategicInsights && projectData.research.strategicInsights.length > 0 ? (
+      projectData.research.strategicInsights.map((insight, index) => (
+        <div
+          key={index}
+          style={{
+            padding: "var(--space-4)",
+            backgroundColor: "#131313",
+            border: "var(--border-width) solid var(--border-color)",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "var(--space-2)",
+            }}
+          >
+            <h6
+              style={{
+                fontFamily: "var(--font-family-roboto-mono)",
+                fontSize: "var(--text-base)",
+                fontWeight: "var(--font-weight-normal)",
+                color: "#ffffff",
+                margin: 0,
+              }}
+            >
+              Insight 0{index + 1}
+            </h6>
+          </div>
+          <p
+            style={{
+              fontFamily: "var(--font-family-roboto-mono)",
+              fontSize: "var(--text-base)",
+              fontWeight: "var(--font-weight-light)",
+              color: "#ffffff",
+              margin: 0,
+              lineHeight: "1.6",
+            }}
+          >
+            {insight || "Analysis details will be displayed here when data is available."}
+          </p>
+        </div>
+      ))
+    ) : (
+      [
+        {
+          title: "User Experience Gaps",
+          description:
+            projectData.research.keyFindings ||
+            "User research revealed critical pain points in the current workflow and opportunities for streamlined interactions that reduce cognitive load.",
+          impact: "high",
+        },
+        {
+          title: "Competitive Positioning",
+          description:
+            "Analysis identified market opportunities for differentiation through clearer information architecture and more intuitive user flows.",
+          impact: "medium",
+        },
+        {
+          title: "Design Strategy Impact",
+          description:
+            projectData.research.designImplications ||
+            "These insights directly informed our design principles of clarity, consistency, and efficiency, ensuring user needs remained central to all design decisions.",
+          impact: "high",
+        },
+      ].map((insight, index) => (
+        <div
+          key={index}
+          style={{
+            padding: "var(--space-4)",
+            backgroundColor: "#131313",
+            border: "var(--border-width) solid var(--border-color)",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "var(--space-2)",
+            }}
+          >
+            <h6
+              style={{
+                fontFamily: "var(--font-family-roboto-mono)",
+                fontSize: "var(--text-base)",
+                fontWeight: "var(--font-weight-normal)",
+                color: "#ffffff",
+                margin: 0,
+              }}
+            >
+              {insight.title}
+            </h6>
+            <span
+              style={{
+                fontFamily: "var(--font-family-roboto-mono)",
+                fontSize: "var(--text-sm)",
+                fontWeight: "var(--font-weight-normal)",
+                color:
+                  insight.impact === "high"
+                    ? "#ffffff"
+                    : insight.impact === "medium"
+                    ? "#cccccc"
+                    : "#999999",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+              }}
+            >
+              {insight.impact} Impact
+            </span>
+          </div>
+          <p
+            style={{
+              fontFamily: "var(--font-family-roboto-mono)",
+              fontSize: "var(--text-base)",
+              fontWeight: "var(--font-weight-light)",
+              color: "#ffffff",
+              margin: 0,
+              lineHeight: "1.6",
+            }}
+          >
+            {insight.description}
+          </p>
+        </div>
+      ))
+    )}
+  </div>
+</div>
+
           </motion.section>
         
         </motion.section>
 
 {/* 4. Ideation */}
-<motion.section>
+<motion.section 
+  id="ideation"
+  className="flex flex-col items-center justify-center" 
+  style={{ marginBottom: "var(--space-12)" }}
+>
   <h2>Ideation</h2>
-
-// inside ProjectDetail render:
-{project.caseStudy?.ideation?.directions && (
-  <section className="mt-16">
-    <h2 className="text-3xl font-bold mb-8">Ideation</h2>
-    <IdeationCarousel directions={project.caseStudy.ideation.directions} />
-  </section>
-)}
-
+  <div style={{ marginBottom: "var(--space-6)",marginTop: "var(--space-3)", border: "1px solid var(--border-color)" }} className="w-full max-w-2xl"></div>
+    {project.caseStudy?.ideation?.directions && (
+      <IdeationCarousel directions={project.caseStudy.ideation.directions} />
+    )}
 </motion.section>
 
 
 
         {/* 5. Execution (The Work) */}
         <motion.section
+          id="execution"
           style={{ marginBottom: "var(--space-12)" }}
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -820,101 +862,141 @@ export default function ProjectDetail({
           </div>
 
           <div style={{ marginBottom: "var(--space-8)" }}>
-            {projectData.deliverables && projectData.deliverables.length > 0 ? (
-              projectData.deliverables.map((deliverables, index) => (
-                <div
-                  key={index}
-                  className="mobile-deliverables-section"
-                  style={{ marginBottom: "var(--space-12)" }}
-                >
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mobile-deliverables-layout items-center">
-                    <div className="lg:col-span-1 mobile-deliverables-content">
-                      <h5 style={{ marginBottom: "var(--space-3)" }}>
-                        {deliverables.category}
-                      </h5>
-                      <p style={{ marginBottom: "var(--space-6)", opacity: 0.8 }}>
-                        {deliverables.description}
-                      </p>
+{/* Deliverables Section */}
+{projectData.deliverables && projectData.deliverables.length > 0 ? (
+  projectData.deliverables.map((deliverables, index) => (
+    <div
+      key={index}
+      className="mobile-deliverables-section"
+      style={{ marginBottom: "var(--space-12)" }}
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mobile-deliverables-layout items-center">
+        {/* Deliverable Info */}
+        <div className="lg:col-span-1 mobile-deliverables-content">
+          <h5 style={{ marginBottom: "var(--space-3)" }}>
+            {deliverables.category}
+          </h5>
+          <p style={{ marginBottom: "var(--space-6)", opacity: 0.8 }}>
+            {deliverables.description}
+          </p>
 
-                      <div className="flex flex-wrap gap-2">
-                      {(expandedDeliverables.has(index)
-                        ? deliverables.items
-                        : deliverables.items.slice(0, 3)
-                      ).map((item, itemIndex) => (
-                        <span
-                          key={itemIndex}
-                          style={{
-                            padding: "var(--space-1) var(--space-2)",
-                            border: "var(--border-width) solid var(--border-color)",
-                            fontFamily: "var(--font-family-roboto-mono)",
-                            fontSize: "var(--text-sm)",
-                            fontWeight: "var(--font-weight-normal)",
-                            color: "var(--text-primary)",
-                          }}
-                        >
-                          {item.name} 
-                        </span>
-                      ))}
+          {/* Deliverable Items */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            {(expandedDeliverables.has(index)
+              ? deliverables.items
+              : deliverables.items.slice(0, 3)
+            ).map((item, itemIndex) => (
+              <span
+                key={itemIndex}
+                style={{
+                  padding: "var(--space-1) var(--space-2)",
+                  border: "var(--border-width) solid var(--border-color)",
+                  fontFamily: "var(--font-family-roboto-mono)",
+                  fontSize: "var(--text-sm)",
+                  fontWeight: "var(--font-weight-normal)",
+                  color: "var(--text-primary)",
+                }}
+              >
+                {item.name}
+              </span>
+            ))}
 
-                        {deliverables.items.length > 3 && (
-                          <button
-                            style={{
-                              padding: "var(--space-1) var(--space-2)",
-                              border: "var(--border-width) solid var(--border-color)",
-                              fontFamily: "var(--font-family-roboto-mono)",
-                              fontSize: "var(--text-sm)",
-                              fontWeight: "var(--font-weight-normal)",
-                              backgroundColor: "transparent",
-                              cursor: "pointer",
-                              color: "var(--text-primary)",
-                              opacity: 0.8,
-                            }}
-                          >
-                            {expandedDeliverables.has(index)
-                              ? "Show less"
-                              : `+${deliverables.items.length - 3} more`}
-                          </button>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="lg:col-span-2 mobile-deliverables-carousel">
-                      <DeliverablesCarousel
-                        items={deliverables.items}
-                        category={deliverables.category}
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="flex flex-wrap gap-2">
-                {projectData.overview.deliverables?.map((deliverable, index) => {
-                  const deliverableName =
-                    typeof deliverable === "string" ? deliverable : deliverable.name;
-                  return (
-                    <span
-                      key={index}
-                      style={{
-                        padding: "var(--space-1) var(--space-2)",
-                        border: "var(--border-width) solid var(--border-color)",
-                        fontFamily: "var(--font-family-roboto-mono)",
-                        fontSize: "var(--text-sm)",
-                        fontWeight: "var(--font-weight-normal)",
-                        color: "var(--text-primary)",
-                      }}
-                    >
-                      {deliverableName}
-                    </span>
-                  );
-                }) || []}
-              </div>
+            {deliverables.items.length > 3 && (
+              <button
+                onClick={() => {
+                  const newSet = new Set(expandedDeliverables);
+                  if (newSet.has(index)) newSet.delete(index);
+                  else newSet.add(index);
+                  setExpandedDeliverables(newSet);
+                }}
+                style={{
+                  padding: "var(--space-1) var(--space-2)",
+                  border: "var(--border-width) solid var(--border-color)",
+                  fontFamily: "var(--font-family-roboto-mono)",
+                  fontSize: "var(--text-sm)",
+                  fontWeight: "var(--font-weight-normal)",
+                  backgroundColor: "transparent",
+                  cursor: "pointer",
+                  color: "var(--text-primary)",
+                  opacity: 0.8,
+                }}
+              >
+                {expandedDeliverables.has(index)
+                  ? "Show less"
+                  : `+${deliverables.items.length - 3} more`}
+              </button>
             )}
+          </div>
+
+          {/* Links Subsection */}
+          {deliverables.links && deliverables.links.length > 0 && (
+            <div style={{ marginTop: "var(--space-4)" }}>
+              <h6 style={{ marginBottom: "var(--space-2)" }}>Links</h6>
+              <div className="flex flex-wrap gap-2">
+                {deliverables.links.map((link, linkIndex) => (
+                  <button
+                    key={linkIndex}
+                    onClick={() => window.open(link.url, "_blank")}
+                    style={{
+                      padding: "var(--space-1) var(--space-2)",
+                      border: "var(--border-width) solid var(--border-color)",
+                      fontFamily: "var(--font-family-roboto-mono)",
+                      fontSize: "var(--text-sm)",
+                      fontWeight: "var(--font-weight-normal)",
+                      backgroundColor: "transparent",
+                      cursor: "pointer",
+                      color: "var(--text-primary)",
+                    }}
+                  >
+                    {link.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Carousel */}
+        <div className="lg:col-span-2 mobile-deliverables-carousel">
+          <DeliverablesCarousel
+            items={deliverables.items}
+            category={deliverables.category}
+          />
+        </div>
+      </div>
+    </div>
+  ))
+) : (
+  // fallback to overview deliverables
+  <div className="flex flex-wrap gap-2">
+    {projectData.overview.deliverables?.map((deliverable, index) => {
+      const deliverableName =
+        typeof deliverable === "string" ? deliverable : deliverable.name;
+      return (
+        <span
+          key={index}
+          style={{
+            padding: "var(--space-1) var(--space-2)",
+            border: "var(--border-width) solid var(--border-color)",
+            fontFamily: "var(--font-family-roboto-mono)",
+            fontSize: "var(--text-sm)",
+            fontWeight: "var(--font-weight-normal)",
+            color: "var(--text-primary)",
+          }}
+        >
+          {deliverableName}
+        </span>
+      );
+    })}
+  </div>
+)}
+
           </div>
         </motion.section>
 
-        {/* 6. Impact / Reflection */}
+        {/* 6. Impact */}
         <motion.section
+          id="impact"
           style={{ marginBottom: "var(--space-12)" }}
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

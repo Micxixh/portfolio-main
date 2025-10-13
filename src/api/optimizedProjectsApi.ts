@@ -1,6 +1,3 @@
-// src/api/optimizedProjectsApi.ts
-
-// --- Define and export the Project interface ---
 export interface Project {
   id: string;
   name: string;
@@ -13,7 +10,7 @@ export interface Project {
       role: string;
       tools: string[];
       targetAudience?: string;
-      deliverables?: (string | { name: string })[];
+      deliverables?: (string | { name: string; link?: string })[];
     };
     research?: {
       competitorAnalysisLink?: string;
@@ -32,6 +29,7 @@ export interface Project {
     deliverables?: {
       category: string;
       description: string;
+      links?: { name: string; url: string }[]; // <-- display name + URL
       items: {
         name: string;
         image: string;
@@ -46,6 +44,8 @@ export interface Project {
   };
 }
 
+
+
 // --- Export your optimizedProjects array ---
 export const optimizedProjects: Project[] = [
   {
@@ -54,7 +54,7 @@ export const optimizedProjects: Project[] = [
     category: "Editorial Design / Web Design",
     description:
       "A creative platform and publication empowering emerging artists and designers through storytelling, opportunity, and community.",
-    image: "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760213476/Artboard_1_pggrig.jpg",
+    image: "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760298162/site_mockup_an0bsf.jpg",
 
     caseStudy: {
       overview: {
@@ -112,9 +112,8 @@ export const optimizedProjects: Project[] = [
             ],
           },
           {
-            name: "Community Focus",
-            description:
-              "Human warmth expressed through photography, organic shapes, and poetic microcopy.",
+            name: "Geometric Realism",
+            description:"This direction explores a faceted, geometric illustration style that mirrors the complexity and structure of creative work itself. The sharp planes and angular rendering give the cover a contemporary, almost architectural feel speaking to design as both art and system. By stripping away photorealism and instead highlighting form, shape, and construction, this approach frames creativity as something built, intentional, and enduring.",
             images: [
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760214054/Ashe_3A_pwpac9.jpg",
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760214053/Ashe_3B_pgjpqo.jpg",
@@ -174,11 +173,11 @@ export const optimizedProjects: Project[] = [
             },
             {
               name: "Quote Template — Ashe Values",
-              image: "/images/ashe/deliverables/social-2.webp",
+              image: "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760217478/Social_mockup_4_3_iryztq.jpg",
             },
             {
               name: "Carousel — Editorial Launch",
-              image: "/images/ashe/deliverables/social-3.webp",
+              image: "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760349775/Social_mockup_1_1_gzo5xv.jpg",
             },
           ],
         },
@@ -189,15 +188,15 @@ export const optimizedProjects: Project[] = [
           items: [
             {
               name: "Typography System",
-              image: "/images/ashe/deliverables/guidelines-1.webp",
+              image: "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760350469/Logo_Suite_gw04fi.jpg",
             },
             {
               name: "Color & Motif Guidelines",
-              image: "/images/ashe/deliverables/guidelines-2.webp",
+              image: "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760350471/Typography_Design_oux2ly.jpg",
             },
             {
               name: "Layout Principles",
-              image: "/images/ashe/deliverables/guidelines-3.webp",
+              image: "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760350472/Photography_Guide_jbbj4e.jpg",
             },
           ],
         },
@@ -205,18 +204,25 @@ export const optimizedProjects: Project[] = [
           category: "Website Snapshots",
           description:
             "A vertically scrolling carousel experience showcasing featured articles, cinematic imagery, and layered motion.",
+          links: [
+            { name: "Full-site", url: "https://ashemag.netlify.app/" }
+          ],
           items: [
             {
               name: "Home Page — Vertical Carousel",
-              image: "/images/ashe/deliverables/web-1.webp",
+              image: "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760353115/site_mockup_mwqdla.jpg",
             },
             {
               name: "Article Page — Immersive Reading",
-              image: "/images/ashe/deliverables/web-2.webp",
+              image: "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760353058/desktop_q2vpgd.jpg",
             },
             {
               name: "Opportunities Section — Creative Callouts",
-              image: "/images/ashe/deliverables/web-3.webp",
+              image: "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760353083/Tablet_ljcuaw.jpg",
+            },
+            {
+              name: "Opportunities Section — Creative Callouts",
+              image: "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760353070/mobile_rqkhzc.jpg",
             },
           ],
         },
