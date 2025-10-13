@@ -105,114 +105,217 @@ export default function Contact() {
 
           {/* Main Content - Vertical Layout */}
           <div
-            className="flex flex-col gap-0"
+            className="flex flex-col"
             style={{
               width: "100%",
+              gap:"var(--space-12)"
             }}
           >
             {/* Contact Form - Top Section */}
            <form action="https://getform.io/f/bwnyogna" method="POST">
-  <motion.div
-    style={{
-      borderBottom: "var(--border-width) solid var(--border-color)",
-      paddingBottom: "var(--space-3)",
-      marginBottom: "var(--space-4)",
-    }}
-    initial={{ x: 20 }}
-    animate={{ x: 0 }}
-    transition={{
-      duration: 0.5,
-      ease: [0.16, 1, 0.3, 1],
-      delay: 0.6,
-    }}
-  >
-    <label
-      htmlFor="name"
-      style={{
-        display: "block",
-        marginBottom: "var(--space-1)",
-        textTransform: "uppercase",
-        fontSize: "var(--text-sm)",
-        fontFamily: "var(--font-family-inter)",
-        fontWeight: "var(--font-weight-medium)",
-        color: "var(--text-primary)",
-        textAlign: "center",
-      }}
-    >
-      Name
-    </label>
-    <Input
-      id="name"
-      name="name"
-      value={formData.name}
-      onChange={handleInputChange}
-      required
-      style={{
-        backgroundColor: "transparent",
-        border: "none",
-        borderRadius: "0",
-        padding: "var(--space-2) 0",
-        fontSize: "var(--text-base)",
-        fontFamily: "var(--font-family-roboto-mono)",
-        fontWeight: "var(--text-body-light)",
-        color: "var(--text-primary)",
-        outline: "none",
-        boxShadow: "none",
-        textAlign: "center",
-      }}
-      className="focus:outline-none focus:ring-0 focus:border-none"
-    />
-  </motion.div>
+              <motion.div
+                style={{
+                  borderBottom: "var(--border-width) solid var(--border-color)",
+                  paddingBottom: "var(--space-3)",
+                  marginBottom: "var(--space-4)",
+                }}
+                initial={{ x: 20 }}
+                animate={{ x: 0 }}
+                transition={{
+                  duration: 0.5,
+                  ease: [0.16, 1, 0.3, 1],
+                  delay: 0.6,
+                }}
+              >
+                <label
+                  htmlFor="name"
+                  style={{
+                    display: "block",
+                    marginBottom: "var(--space-1)",
+                    textTransform: "uppercase",
+                    fontSize: "var(--text-sm)",
+                    fontFamily: "var(--font-family-inter)",
+                    fontWeight: "var(--font-weight-medium)",
+                    color: "var(--text-primary)",
+                    textAlign: "center",
+                  }}
+                >
+                  Name
+                </label>
+                <Input
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                  style={{
+                    backgroundColor: "transparent",
+                    border: "none",
+                    borderRadius: "0",
+                    padding: "var(--space-2) 0",
+                    fontSize: "var(--text-base)",
+                    fontFamily: "var(--font-family-roboto-mono)",
+                    fontWeight: "var(--text-body-light)",
+                    color: "var(--text-primary)",
+                    outline: "none",
+                    boxShadow: "none",
+                    textAlign: "center",
+                  }}
+                  className="focus:outline-none focus:ring-0 focus:border-none"
+                />
+              </motion.div>
+              <motion.div
+                style={{
+                  borderBottom: "var(--border-width) solid var(--border-color)",
+                  paddingBottom: "var(--space-3)",
+                  marginBottom: "var(--space-4)",
+                }}
+                initial={{ x: 20 }}
+                animate={{ x: 0 }}
+                transition={{
+                  duration: 0.5,
+                  ease: [0.16, 1, 0.3, 1],
+                  delay: 0.6,
+                }}
+              >
+                <label
+                  htmlFor="email"
+                  style={{
+                    display: "block",
+                    marginBottom: "var(--space-1)",
+                    textTransform: "uppercase",
+                    fontSize: "var(--text-sm)",
+                    fontFamily: "var(--font-family-inter)",
+                    fontWeight: "var(--font-weight-medium)",
+                    color: "var(--text-primary)",
+                    textAlign: "center",
+                  }}
+                >
+                  Email
+                </label>
+                <Input
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  style={{
+                    backgroundColor: "transparent",
+                    border: "none",
+                    borderRadius: "0",
+                    padding: "var(--space-2) 0",
+                    fontSize: "var(--text-base)",
+                    fontFamily: "var(--font-family-roboto-mono)",
+                    fontWeight: "var(--text-body-light)",
+                    color: "var(--text-primary)",
+                    outline: "none",
+                    boxShadow: "none",
+                    textAlign: "center",
+                  }}
+                  className="focus:outline-none focus:ring-0 focus:border-none"
+                />
+              </motion.div>
+              <motion.div
+                style={{
+                  borderBottom: "var(--border-width) solid var(--border-color)",
+                  paddingBottom: "var(--space-3)",
+                  marginBottom: "var(--space-4)",
+                }}
+                initial={{ x: 20 }}
+                animate={{ x: 0 }}
+                transition={{
+                  duration: 0.5,
+                  ease: [0.16, 1, 0.3, 1],
+                  delay: 0.6,
+                }}
+              >
+                <label
+                  htmlFor="message"
+                  style={{
+                    display: "block",
+                    marginBottom: "var(--space-1)",
+                    textTransform: "uppercase",
+                    fontSize: "var(--text-sm)",
+                    fontFamily: "var(--font-family-inter)",
+                    fontWeight: "var(--font-weight-medium)",
+                    color: "var(--text-primary)",
+                    textAlign: "center",
+                  }}
+                >
+                  message
+                </label>
+                <Input
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  required
+                  style={{
+                    backgroundColor: "transparent",
+                    border: "none",
+                    borderRadius: "0",
+                    padding: "var(--space-2) 0",
+                    fontSize: "var(--text-base)",
+                    fontFamily: "var(--font-family-roboto-mono)",
+                    fontWeight: "var(--text-body-light)",
+                    color: "var(--text-primary)",
+                    outline: "none",
+                    boxShadow: "none",
+                    textAlign: "center",
+                  }}
+                  className="focus:outline-none focus:ring-0 focus:border-none"
+                />
+              </motion.div>
 
-  {/* Repeat for email and message fields */}
-  
-  <motion.div
-    style={{
-      display: "flex",
-      justifyContent: "center",
-      width: "100%",
-    }}
-    initial={{ y: 20, opacity: 0 }}
-    animate={{ y: 0, opacity: 1 }}
-    transition={{
-      duration: 0.5,
-      ease: [0.16, 1, 0.3, 1],
-      delay: 0.9,
-    }}
-  >
-    <motion.button
-      type="submit"
-      className="relative overflow-hidden cursor-pointer"
-      style={{
-        backgroundColor: "var(--text-primary)",
-        color: "var(--text-inverse)",
-        border: "var(--border-width) solid var(--border-color)",
-        borderRadius: "0",
-        padding: "var(--space-3) var(--space-6)",
-        textTransform: "uppercase",
-        fontSize: "var(--text-sm)",
-        fontFamily: "var(--font-family-inter)",
-        fontWeight: "var(--font-weight-medium)",
-      }}
-      whileHover={{
-        scale: 1.02,
-        transition: { duration: 0.15, ease: "easeOut" },
-      }}
-      whileTap={{
-        scale: 0.98,
-        transition: { duration: 0.1, ease: "easeOut" },
-      }}
-    >
-      <motion.span
-        className="absolute inset-0"
-        style={{ backgroundColor: "var(--text-inverse)", transformOrigin: "left" }}
-        initial={{ scaleX: 0 }}
-        whileHover={{ scaleX: 1, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
-      />
-      <span className="relative z-10 blend-difference">Send Message</span>
-    </motion.button>
-  </motion.div>
-</form>
+              {/* Repeat for email and message fields */}
+              
+              <motion.div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  width: "100%",
+                }}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{
+                  duration: 0.5,
+                  ease: [0.16, 1, 0.3, 1],
+                  delay: 0.9,
+                }}
+              >
+                <motion.button
+                  type="submit"
+                  className="relative overflow-hidden cursor-pointer"
+                  style={{
+                    backgroundColor: "var(--text-primary)",
+                    color: "var(--text-inverse)",
+                    border: "var(--border-width) solid var(--border-color)",
+                    borderRadius: "0",
+                    padding: "var(--space-3) var(--space-6)",
+                    textTransform: "uppercase",
+                    fontSize: "var(--text-sm)",
+                    fontFamily: "var(--font-family-inter)",
+                    fontWeight: "var(--font-weight-medium)",
+                  }}
+                  whileHover={{
+                    scale: 1.02,
+                    transition: { duration: 0.15, ease: "easeOut" },
+                  }}
+                  whileTap={{
+                    scale: 0.98,
+                    transition: { duration: 0.1, ease: "easeOut" },
+                  }}
+                >
+                  <motion.span
+                    className="absolute inset-0"
+                    style={{ backgroundColor: "var(--text-inverse)", transformOrigin: "left" }}
+                    initial={{ scaleX: 0 }}
+                    whileHover={{ scaleX: 1, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
+                  />
+                  <span className="relative z-10 blend-difference">Send Message</span>
+                </motion.button>
+              </motion.div>
+            </form>
 
             {/* Contact Details - Bottom Section */}
             <motion.div
