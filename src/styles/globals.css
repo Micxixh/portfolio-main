@@ -3,6 +3,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
 :root {
   --font-size: 16px;
 
@@ -22,7 +23,7 @@
   --space-20: 160px;
 
   /* Layout-specific spacing */
-  --header-height: 80px;
+  --header-height: 70px;
   --header-padding-top: var(--space-12);
   --content-padding-x: var(--space-6);
   --content-padding-y: var(--space-8);
@@ -37,9 +38,9 @@
   --mobile-element-gap: var(--space-1);
 
   /* Typography variables */
-  --text-h1: 48px;
+  --text-h1: 96px;
   --text-h2: 48px;
-  --text-h3: 36px;
+  --text-h3: 28px;
   --text-h4: 24px;
   --text-h5: 28px;
   --text-h6: 20px;
@@ -306,7 +307,6 @@ h3 {
   font-family: var(--font-family-inter);
   font-size: var(--text-h3);
   font-weight: var(--font-weight-medium);
-  text-transform: uppercase;
   line-height: 1.5;
 }
 
@@ -314,7 +314,6 @@ h4 {
   font-family: var(--font-family-inter);
   font-size: var(--text-h4);
   font-weight: var(--font-weight-semibold);
-  text-transform: uppercase;
   line-height: 1.5;
 }
 
@@ -377,8 +376,8 @@ html {
 @media (max-width: 767px) {
   /* Adjust base font sizes for mobile */
   :root {
-    --text-h1: 32px;
-    --text-h2: 32px;
+    --text-h1: 96px;
+    --text-h2: 48px;
     --text-h3: 24px;
     --text-h4: 20px;
     --text-h5: 18px;

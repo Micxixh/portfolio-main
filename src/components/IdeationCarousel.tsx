@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useRef, useEffect } from "react";
+import { color, motion, transform, vw } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Direction {
@@ -13,102 +13,292 @@ interface IdeationCarouselProps {
 }
 
 export default function IdeationCarousel({ directions }: IdeationCarouselProps) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  // 🧠 Detect mobile viewport
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   if (!directions || directions.length === 0) return null;
 
   return (
-   <section
-  className="mt-16 flex flex-col"
-  style={{ rowGap: "24px", maxWidth: "1080px" }}
->
-  {directions.map((direction, dirIndex) => (
-    <div
-      key={dirIndex}
-      className="flex flex-col md:flex-row h-[90vh] md:h-[70vh] items-center justify-between bg-neutral-50 rounded-3xl shadow-lg border border-neutral-200 p-6 sm:p-10"
-    >
-      {/* Image Section */}
-      {direction.images && direction.images.length > 0 && (
-        <div className="flex-shrink-0 w-full h-1/2 md:h-full md:w-1/2">
-          <DirectionCarousel images={direction.images} />
-        </div>
+    <section className="w-full flex flex-col items-center mt-16 space-y-20">
+      {directions.map((direction, index) =>
+        isMobile ? (
+          // 📱 --- MOBILE LAYOUT ---
+          <div
+            key={index}
+            className="w-full border border-neutral-200 rounded-xl bg-white overflow-hidden"
+            style={{ marginBottom: "1.5rem" }}
+          >
+            {direction.images && direction.images.length > 0 && (
+              <MobileCarousel images={direction.images} />
+            )}
+
+            <div className="p-6 flex flex-col space-y-3" style={{ padding: "1.5rem", gap: "1rem", textAlign: "left" }}>
+              <p className="text-xs text-neutral-500 tracking-widest uppercase">
+                Direction {String(index + 1).padStart(2, "0")}
+              </p>
+              <h3 className="text-2xl font-semibold leading-snug">{direction.name}</h3>
+              <p className="text-neutral-600 text-base leading-relaxed">
+                {direction.description}
+              </p>
+            </div>
+          </div>
+        ) : (
+
+
+          // 💻 --- DESKTOP LAYOUT ---
+          <div key={index} className="w-full border" style={{ marginBottom: "1.5rem" }}>
+            {direction.images && direction.images.length > 0 && (
+              <div className="relative w-full overflow-visible bg-neutral-50">
+                <DirectionCarousel images={direction.images} />
+              </div>
+            )}
+
+            <div
+              className="max-w-[1080px] w-full mx-auto flex mt-10 px-6"
+              style={{ width: "90%", maxWidth: "1080px" }}
+            >
+              <div
+                className="w-full pr-6"
+                style={{
+                  borderRight: "2px solid",
+                  padding: "1.5rem",
+                  marginRight: "1.5rem",
+                }}
+              >
+                <p
+                  className="text-sm text-neutral-500 tracking-widest mb-2 text-right"
+                  style={{ letterSpacing: "0.1em", textAlign: "right" }}
+                >
+                  Potential Direction {String(index + 1).padStart(2, "0")}
+                </p>
+
+                <h3
+                  className="w-full text-3xl font-semibold align-right text-right tracking-tight leading-snug border-r"
+                  style={{ textAlign: "right" }}
+                >
+                  {direction.name}
+                </h3>
+              </div>
+
+              <p
+                className="w-full text-muted-foreground text-lg leading-relaxed"
+                style={{ padding: "1.5rem", textAlign: "left" }}
+              >
+                {direction.description}
+              </p>
+            </div>
+          </div>
+        )
       )}
-
-      {/* Text Section */}
-      <div
-        className="flex flex-col w-full md:w-1/2 overflow-y-auto mt-6 md:mt-0 md:ml-8 px-6 py-4 md:px-10 md:py-8"
-        style={{ rowGap: "12px", padding: "36px" }}
-      >
-        <h3 className="text-3xl font-semibold tracking-tight mb-4">
-          {direction.name}
-        </h3>
-        <p className="text-muted-foreground leading-relaxed text-lg">
-          {direction.description}
-        </p>
-      </div>
-    </div>
-  ))}
-</section>
-
+    </section>
   );
 }
 
 function DirectionCarousel({ images }: { images: string[] }) {
   const [current, setCurrent] = useState(0);
+  const [slideWidth, setSlideWidth] = useState(0);
+  const [ratios, setRatios] = useState<number[]>([]);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+
   const total = images.length;
 
   const next = () => setCurrent((prev) => (prev + 1) % total);
   const prev = () => setCurrent((prev) => (prev - 1 + total) % total);
 
-  return (
-    <div className="relative w-full h-full flex justify-center items-center rounded-2xl shadow-md bg-neutral-100 border border-neutral-300">
-      {/* Image */}
-      <AnimatePresence mode="wait">
-        <motion.img
-          key={images[current]}
-          src={images[current]}
-          alt={`Slide ${current + 1}`}
-          initial={{ opacity: 0, x: 60 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -60 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="h-full w-full object-cover rounded-2xl"
-        />
-      </AnimatePresence>
+  // measure slide width
+useEffect(() => {
+  const updateWidth = () => {
+    if (!trackRef.current) return;
+    const firstSlide = trackRef.current.querySelector(".slide") as HTMLElement;
+    if (firstSlide) {
+      const width = firstSlide.offsetWidth;
+      setSlideWidth(width);
+    }
+  };
 
-      {/* Navigation Arrows */}
+  updateWidth();
+  window.addEventListener("resize", updateWidth);
+  return () => window.removeEventListener("resize", updateWidth);
+}, [images]);
+
+
+  // load ratios
+  useEffect(() => {
+    const loadRatios = async () => {
+      const promises = images.map(
+        (src) =>
+          new Promise<number>((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve(img.width / img.height);
+            img.onerror = () => resolve(1);
+            img.src = src;
+          })
+      );
+      const results = await Promise.all(promises);
+      setRatios(results);
+    };
+    loadRatios();
+  }, [images]);
+
+  return (
+    <div
+      className="relative flex items-center justify-center w-full overflow-hidden border"
+      style={{
+        backgroundColor: "#000",
+        borderColor: "var(--border-color)",
+        position: "relative",
+      }}
+    >
+      <motion.div
+        ref={trackRef}
+        className="flex gap-[2px]"
+        animate={slideWidth ? { x: -current * slideWidth + slideWidth } : {}}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
+        style={{ gap: "0.5rem", padding: "1rem 0" }}
+      >
+
+        {images.map((image, i) => {
+          const ratio = ratios[i];
+          const isLandscape = ratio && ratio > 1;
+          return (
+            <div
+              key={i}
+              className={`slide flex-shrink-0 transition-all duration-700 ${
+                i === current ? "scale-100 opacity-100" : "scale-95 opacity-70"
+              }`}
+              style={{
+                width: "70vw",
+                maxWidth: "900px",
+                height: "80vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <img
+                src={image}
+                alt={`Slide ${i + 1}`}
+                style={{
+                  objectFit: "cover",
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+                  backgroundColor: "#111",
+                  ...(isLandscape
+                    ? { width: "100%", height: "auto", maxWidth: "900px" }
+                    : { width: "auto", height: "100%", maxHeight: "80vh" }),
+                }}
+              />
+            </div>
+          );
+        })}
+      </motion.div>
+
+      {/* navigation buttons */}
       <button
         onClick={prev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full shadow-lg backdrop-blur-md"
-        style={{
-          color: "white",
-          mixBlendMode: "difference",
-          backgroundColor: "rgba(48, 48, 48, 1)",
-        }}
+        aria-label="Previous"
+        className="absolute left-0 top-0 h-full flex items-center justify-center border-r
+                   bg-black/60 hover:bg-black/80 transition-all w-12 sm:w-16"
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.8)", width: "4rem" }}
       >
-        <ChevronLeft className="w-6 h-6 text-white" />
+        <ChevronLeft className="w-8 h-8 text-white" style={{ color: "white" }} />
       </button>
       <button
         onClick={next}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full shadow-lg backdrop-blur-md"
-        style={{
-          color: "white",
-          mixBlendMode: "difference",
-          backgroundColor: "rgba(48, 48, 48, 1)",
-        }}
+        aria-label="Next"
+        className="absolute right-0 top-0 h-full flex items-center justify-center border-l
+                   bg-black/60 hover:bg-black/80 transition-all w-12 sm:w-16"
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.8)", width: "4rem" }}
       >
-        <ChevronRight className="w-6 h-6 text-white" />
+        <ChevronRight className="w-8 h-8 text-white" style={{ color: "white" }} />
       </button>
+    </div>
+  );
+}
 
-      {/* Dots Indicator */}
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
-        {images.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            className={`h-2.5 w-2.5 rounded-full transition-all duration-300 ${
-              i === current ? "bg-white" : "bg-white/40"
-            }`}
+  function MobileCarousel({ images }: { images: string[] }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollAmount = window.innerWidth // Scroll by 80% of viewport width
+
+  const handleScrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+    }
+  };
+
+  const handleScrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
+      <div
+        className="w-full flex flex-col items-center bg-black"
+        style={{
+          overflowX: "auto",
+          scrollSnapType: "x mandatory",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
+        ref={scrollRef}
+      >
+        <div
+          className="flex snap-x snap-mandatory"
+          style={{
+            scrollBehavior: "smooth",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
+          {images.map((image, i) => (
+            <div key={i} className="flex-shrink-0 h-full snap-start flex justify-center items-center">
+              <img
+                src={image}
+                alt={`Slide ${i + 1}`}
+                style={{
+                  maxWidth: "100vw",
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+                  backgroundColor: "#111",
+                  transform: `translateX(${window.innerWidth}px)`,
+
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Buttons */}
+      <div style={{ display: "flex", width: "100vw" }}>
+        <div onClick={handleScrollLeft}>
+          <ChevronLeft
+            className="w-full h-8 text-white cursor-pointer"
+            style={{
+              width: "50vw",
+              backgroundColor: "black",
+              color: "white",
+              borderRight: "1px solid rgba(255, 255, 255, 0.5)",
+            }}
           />
-        ))}
+        </div>
+        <div onClick={handleScrollRight}>
+          <ChevronRight
+            className="w-full h-8 text-white cursor-pointer"
+            style={{
+              width: "50vw",
+              backgroundColor: "black",
+              color: "white",
+            }}
+          />
+        </div>
       </div>
     </div>
   );
