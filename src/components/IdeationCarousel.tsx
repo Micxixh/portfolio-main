@@ -223,24 +223,28 @@ useEffect(() => {
 }
 
   function MobileCarousel({ images }: { images: string[] }) {
-  const scrollRef = useRef(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  const scrollAmount = window.innerWidth // Scroll by 80% of viewport width
-
-  const handleScrollLeft = () => {
+  const handleScroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-    }
-  };
-
-  const handleScrollRight = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      const container = scrollRef.current;
+      const scrollAmount = container.clientWidth; // use container width (viewport equivalent)
+      container.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
     }
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "100%",
+      }}
+    >
       <div
         className="w-full flex flex-col items-center bg-black"
         style={{
@@ -256,19 +260,24 @@ useEffect(() => {
           style={{
             scrollBehavior: "smooth",
             WebkitOverflowScrolling: "touch",
+            width: "300vw",
+            overflow: "visible",
           }}
         >
           {images.map((image, i) => (
-            <div key={i} className="flex-shrink-0 h-full snap-start flex justify-center items-center">
+            <div
+              key={i}
+              className="flex-shrink-0 h-full snap-start flex justify-center items-center"
+              style={{ width: "100vw" }} // ensure each image takes full viewport width
+            >
               <img
                 src={image}
                 alt={`Slide ${i + 1}`}
                 style={{
-                  maxWidth: "100vw",
+                  width: "100vw",
+                  height: "auto",
                   boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
                   backgroundColor: "#111",
-                  transform: `translateX(${window.innerWidth}px)`,
-
                 }}
               />
             </div>
@@ -278,7 +287,7 @@ useEffect(() => {
 
       {/* Buttons */}
       <div style={{ display: "flex", width: "100vw" }}>
-        <div onClick={handleScrollLeft}>
+        <div onClick={() => handleScroll("left")}>
           <ChevronLeft
             className="w-full h-8 text-white cursor-pointer"
             style={{
@@ -289,7 +298,7 @@ useEffect(() => {
             }}
           />
         </div>
-        <div onClick={handleScrollRight}>
+        <div onClick={() => handleScroll("right")}>
           <ChevronRight
             className="w-full h-8 text-white cursor-pointer"
             style={{
