@@ -261,6 +261,7 @@ useEffect(() => {
             scrollBehavior: "smooth",
             WebkitOverflowScrolling: "touch",
             width: "300vw",
+            transform: "translateX(100vw)",
             overflow: "visible",
           }}
         >
