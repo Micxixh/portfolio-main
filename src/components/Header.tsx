@@ -56,7 +56,7 @@ export default function Header({
             }}
             onClick={onHomeClick}
           >
-            <img src="/build/assets/Wordmark.png" alt="Micaiah Douglas Logo" style={{ height: '40px' }} />
+            <img src="https://res.cloudinary.com/dfsmaylfo/image/upload/v1760560404/Asset_1_4x_jwailg.png" alt="Micaiah Douglas Logo" style={{ height: '40px' }} />
           </motion.div>
 
           {/* Desktop Navigation - Hidden on mobile */}

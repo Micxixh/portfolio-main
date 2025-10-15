@@ -104,8 +104,8 @@ export default function IdeationCarousel({ directions }: IdeationCarouselProps) 
 function DirectionCarousel({ images }: { images: string[] }) {
   const [current, setCurrent] = useState(0);
   const [slideWidth, setSlideWidth] = useState(0);
-  const [ratios, setRatios] = useState<number[]>([]);
-  const trackRef = useRef<HTMLDivElement | null>(null);
+  const [ratios, setRatios] = useState([]);
+  const trackRef = useRef(null);
 
   const total = images.length;
 
@@ -223,7 +223,7 @@ useEffect(() => {
 }
 
   function MobileCarousel({ images }: { images: string[] }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef(null);
 
   const scrollAmount = window.innerWidth // Scroll by 80% of viewport width
 

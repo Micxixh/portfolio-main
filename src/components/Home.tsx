@@ -1,5 +1,4 @@
-import image_f03962ec6305114f006afd3614a7c6607cd018e8 from "figma:asset/f03962ec6305114f006afd3614a7c6607cd018e8.png";
-("use client");
+"use client";
 
 import { motion } from "motion/react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
@@ -143,7 +142,7 @@ export default function Home({
         transition={{ duration: 0.6, ease: "easeInOut" }}
       >
         <ImageWithFallback
-          src={image_f03962ec6305114f006afd3614a7c6607cd018e8}
+          src="https://res.cloudinary.com/dfsmaylfo/image/upload/v1760560538/portrait_r8jllf.png"
           alt="Micaiah Douglas Portrait"
           className="w-full h-full object-cover"
           style={{
