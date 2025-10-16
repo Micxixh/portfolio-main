@@ -104,8 +104,8 @@ export default function IdeationCarousel({ directions }: IdeationCarouselProps) 
 function DirectionCarousel({ images }: { images: string[] }) {
   const [current, setCurrent] = useState(0);
   const [slideWidth, setSlideWidth] = useState(0);
-  const [ratios, setRatios] = useState([]);
-  const trackRef = useRef(null);
+  const [ratios, setRatios] = useState<number[]>([]);
+  const trackRef = useRef<HTMLDivElement | null>(null);
 
   const total = images.length;
 
@@ -113,21 +113,19 @@ function DirectionCarousel({ images }: { images: string[] }) {
   const prev = () => setCurrent((prev) => (prev - 1 + total) % total);
 
   // measure slide width
-useEffect(() => {
-  const updateWidth = () => {
-    if (!trackRef.current) return;
-    const firstSlide = trackRef.current.querySelector(".slide") as HTMLElement;
-    if (firstSlide) {
-      const width = firstSlide.offsetWidth;
-      setSlideWidth(width);
-    }
-  };
+  useEffect(() => {
+    const updateWidth = () => {
+      if (!trackRef.current) return;
+      const firstSlide = trackRef.current.querySelector(".slide") as HTMLElement;
+      if (firstSlide) {
+        setSlideWidth(firstSlide.offsetWidth);
+      }
+    };
 
-  updateWidth();
-  window.addEventListener("resize", updateWidth);
-  return () => window.removeEventListener("resize", updateWidth);
-}, [images]);
-
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, [images]);
 
   // load ratios
   useEffect(() => {
@@ -156,14 +154,27 @@ useEffect(() => {
         position: "relative",
       }}
     >
+      {/* 🔥 Background Blur Layer */}
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: `url(${images[current]})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "blur(30px) brightness(0.4)",
+          transform: "scale(1.1)",
+          transition: "background-image 0.8s ease-in-out",
+        }}
+      />
+
+      {/* 🖼️ Carousel Track (content on top of blur) */}
       <motion.div
         ref={trackRef}
-        className="flex gap-[2px]"
+        className="flex gap-[2px] z-10"
         animate={slideWidth ? { x: -current * slideWidth + slideWidth } : {}}
         transition={{ duration: 0.6, ease: "easeInOut" }}
         style={{ gap: "0.5rem", padding: "1rem 0" }}
       >
-
         {images.map((image, i) => {
           const ratio = ratios[i];
           const isLandscape = ratio && ratio > 1;
@@ -174,8 +185,8 @@ useEffect(() => {
                 i === current ? "scale-100 opacity-100" : "scale-95 opacity-70"
               }`}
               style={{
-                width: "70vw",
-                maxWidth: "900px",
+                width: "100vw",
+                maxWidth: "70vw",
                 height: "80vh",
                 display: "flex",
                 justifyContent: "center",
@@ -190,9 +201,10 @@ useEffect(() => {
                   objectFit: "cover",
                   boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
                   backgroundColor: "#111",
-                  ...(isLandscape
-                    ? { width: "100%", height: "auto", maxWidth: "900px" }
-                    : { width: "auto", height: "100%", maxHeight: "80vh" }),
+                  width: "100%", 
+                  height: "auto", 
+                  maxWidth: "900px",
+                  zIndex:"10"
                 }}
               />
             </div>
@@ -200,28 +212,29 @@ useEffect(() => {
         })}
       </motion.div>
 
-      {/* navigation buttons */}
+      {/* ⬅️➡️ Navigation Buttons (unchanged) */}
       <button
         onClick={prev}
         aria-label="Previous"
         className="absolute left-0 top-0 h-full flex items-center justify-center border-r
                    bg-black/60 hover:bg-black/80 transition-all w-12 sm:w-16"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.8)", width: "4rem" }}
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.8)", width: "4rem", zIndex:"50" }}
       >
-        <ChevronLeft className="w-8 h-8 text-white" style={{ color: "white" }} />
+        <ChevronLeft className="w-8 h-8 text-white" style={{ color: "white", zIndex:"50" }} />
       </button>
       <button
         onClick={next}
         aria-label="Next"
         className="absolute right-0 top-0 h-full flex items-center justify-center border-l
                    bg-black/60 hover:bg-black/80 transition-all w-12 sm:w-16"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.8)", width: "4rem" }}
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.8)", width: "4rem", zIndex:"50" }}
       >
-        <ChevronRight className="w-8 h-8 text-white" style={{ color: "white" }} />
+        <ChevronRight className="w-8 h-8 text-white" style={{ color: "white", zIndex:"50"}} />
       </button>
     </div>
   );
 }
+
 
   function MobileCarousel({ images }: { images: string[] }) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
