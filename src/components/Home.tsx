@@ -79,7 +79,7 @@ export default function Home({
                   margin: 0,
                 }}
               >
-                BRAND DESIGNER
+                PRODUCT DESIGNER
               </h2>
             </motion.div>
 

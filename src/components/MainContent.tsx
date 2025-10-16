@@ -179,7 +179,7 @@ const HeroTextSection = memo(({
             delay: isMobile ? 0.4 : 0.6,
           }}
         >
-          { "BRAND Designer"}
+          { "Product Designer"}
         </motion.h3>
 
         <motion.p
