@@ -19,7 +19,7 @@ export default function About() {
         style={{ 
           width: '100%', 
           height: '100vh',
-          overflowY: 'auto',
+          overflowY: 'scroll',
           padding: 'var(--space-8)',
           borderLeft: '1px solid var(--border-color)',
           display: 'flex',
