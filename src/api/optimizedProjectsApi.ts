@@ -21,6 +21,7 @@ export interface DeliverablesSection {
 
 export interface Project {
   id: string;
+  year: string;
   name: string;
   category: string;
   description: string;
@@ -63,6 +64,7 @@ export interface Project {
 export const optimizedProjects: Project[] = [
   {
     id: "ashe-magazine",
+    year: "2025",
     name: "Ashe Magazine",
     category: "Editorial Design / Web Design",
     description:

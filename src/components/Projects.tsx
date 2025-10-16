@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import ProjectCard from "./ProjectCard";
 import ProjectDetail from "./ProjectDetail";
-import { Project } from "../api/projectsApi";
+import { Project } from "../api/optimizedProjectsApi";
 
 // Animation configuration
 const ANIMATION_CONFIG = {
@@ -157,13 +157,14 @@ export default function Projects({
         >
           <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 lg:gap-20 mobile-projects-grid">
             {projects.map((project, index) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                index={index}
-                onSelect={handleProjectSelect}
-                isSelected={false}
-              />
+              <div key={project.id}>
+                <ProjectCard
+                  project={project}
+                  index={index}
+                  onSelect={handleProjectSelect}
+                  isSelected={false}
+                />
+              </div>
             ))}
           </div>
         </div>

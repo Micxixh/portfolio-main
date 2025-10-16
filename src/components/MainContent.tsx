@@ -457,35 +457,14 @@ export default function MainContent({
           delay: isAboutView ? 0.2 : 0,
         }}
       >
-        {/* Title Block - Fixed at top */}
-        <motion.div
-          style={{
-            borderBottom:
-              "var(--border-width) solid var(--border-color)",
-            paddingBottom: "var(--space-2)",
-            marginBottom: "var(--space-4)",
-            flexShrink: 0, // Don't shrink this element
-          }}
-          initial={{ x: 50 }}
-          animate={{
-            x: isAboutView ? 0 : 50,
-          }}
-          transition={{
-            duration: 0.7,
-            ease: [0.16, 1, 0.3, 1],
-            delay: isAboutView ? 0.4 : 0,
-          }}
-        >
-          <h1 style={{ textAlign: "left" }}>ABOUT ME</h1>
-        </motion.div>
 
         {/* Scrollable Accordion Container - Only this part scrolls */}
         <motion.div
           className="mobile-about-accordion-container hide-scrollbar"
           style={{
-            height:
-              "calc(100vh - var(--space-12) - var(--mobile-content-padding-y) - 72px)", // Full height minus header, padding, and title block
+            height:"100%", // Full height minus header, padding, and title block
             overflowY: "auto",
+            padding:"none",
             overflowX: "hidden",
             WebkitOverflowScrolling: "touch", // Smooth iOS scrolling
           }}

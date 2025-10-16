@@ -543,6 +543,7 @@ useEffect(() => {
                     backgroundColor: "#131313",
                     border: "var(--border-width) solid var(--border-color)",
                     display: "flex",
+                    borderRadius: "1rem",
                     flexDirection: "column",
                     justifyContent: "space-between",
                     height: "100%",
@@ -622,6 +623,7 @@ useEffect(() => {
                   cursor: "pointer",
                   padding: "var(--space-2) var(--space-4)",
                   border: "var(--border-width) solid var(--border-color)",
+                  borderRadius: "0.25rem",
                   backgroundColor: "transparent",
                   fontFamily: "var(--font-family-inter)",
                   fontSize: "var(--text-sm)",
@@ -654,6 +656,8 @@ useEffect(() => {
                   cursor: "pointer",
                   padding: "var(--space-2) var(--space-4)",
                   border: "var(--border-width) solid var(--border-color)",
+                  borderRadius: "0.25rem",
+
                   backgroundColor: "transparent",
                   fontFamily: "var(--font-family-inter)",
                   fontSize: "var(--text-sm)",
@@ -739,112 +743,123 @@ useEffect(() => {
               display: "flex",
               flexDirection: "column",
               width: "100%",
+              backgroundImage: `url(${project.image})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              color:"white" 
             }}
           >
-            <div
-              style={{
-                maxWidth: "1080px",
-                width: "100%",
-                padding: "var(--space-6)",
-                gap: "var(--space-2)",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                justifyContent: "flex-start",
-              }}
-            >
-              {/* Summary */}
-              <h4 style={{ color: "white", fontSize: "clamp(1rem, 2vw, 1.25rem)" }}>
-                Summary
-              </h4>
-              <p style={{ color: "white", fontSize: "clamp(0.9rem, 1.8vw, 1rem)" }}>
-                {(expanded ? summaries : summaries.slice(0, 1)).map((paragraph, idx) => (
-                  <span
-                    key={idx}
-                    style={{
-                      display: "block",
-                      marginBottom: "var(--space-2)",
-                      lineHeight: "1.6",
-                    }}
-                  >
-                    {paragraph}
-                    {expanded ? "" : idx === 0 ? ".." : ""}
-                  </span>
-                ))}
-
-                {summaries.length > 1 && (
-                  <button
-                    onClick={() => setExpanded(!expanded)}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      color: "white",
-                      cursor: "pointer",
-                      textDecoration: "underline",
-                      fontFamily: "var(--font-family-inter)",
-                      fontSize: "clamp(0.85rem, 1.5vw, 0.95rem)",
-                      marginTop: "var(--space-1)",
-                    }}
-                  >
-                    {expanded ? "Show less" : "Show more"}
-                  </button>
-                )}
-              </p>
-              <div style={{ width: "100%", display: "flex", flexDirection: "row", gap: "var(--space-4)" }}>
-
-              {/* Relevant Links */}
-              {projectData.deliverables?.links &&
-                projectData.deliverables.links.length > 0 && (
-                  <div
-                    style={{
-                      textAlign: "left",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      gap: "var(--space-2)",
-                    }}
-                  >
-                    <h4
+            <div style={{ width: "100%", backgroundColor: "rgba(0, 0, 0, 0.9)", alignItems: "center", justifyContent: "center", display: "flex", flexDirection: "column" }}>
+              <div
+                style={{
+                  maxWidth: "1080px",
+                  width: "100%",
+                  padding: "var(--space-6)",
+                  gap: "var(--space-2)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  justifyContent: "flex-start",
+                }}
+              >
+                {/* Summary */}
+                <h4 style={{ color: "white", fontSize: "clamp(1rem, 2vw, 1.25rem)" }}>
+                  Summary
+                </h4>
+                <p style={{ color: "white", fontSize: "clamp(0.9rem, 1.8vw, 1rem)" }}>
+                  {(expanded ? summaries : summaries.slice(0, 1)).map((paragraph, idx) => (
+                    <span
+                      key={idx}
                       style={{
-                        marginTop: "var(--space-4)",
-                        color: "white",
-                        fontSize: "clamp(1rem, 2vw, 1.25rem)",
+                        display: "block",
+                        marginBottom: "var(--space-2)",
+                        lineHeight: "1.6",
                       }}
                     >
-                      Relevant links:
-                    </h4>
+                      {paragraph}
+                      {expanded ? "" : idx === 0 ? ".." : ""}
+                    </span>
+                  ))}
 
-                    {projectData.deliverables.links.map((link, idx) => (
-                      <a
-                        key={idx}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                  {summaries.length > 1 && (
+                    <button
+                      onClick={() => setExpanded(!expanded)}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        color: "white",
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                        fontFamily: "var(--font-family-inter)",
+                        fontSize: "clamp(0.85rem, 1.5vw, 0.95rem)",
+                        marginTop: "var(--space-1)",
+                      }}
+                    >
+                      {expanded ? "Show less" : "Show more"}
+                    </button>
+                  )}
+                </p>
+                <div style={{ width: "100%", display: "flex", flexDirection: "row", gap: "var(--space-4)" }}>
+
+                {/* Relevant Links */}
+                {projectData.deliverables?.links &&
+                  projectData.deliverables.links.length > 0 && (
+                    <div
+                      style={{
+                        textAlign: "left",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        gap: "var(--space-2)",
+                      }}
+                    >
+                      <h4
                         style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          gap: "0.5rem",
-                          cursor: "pointer",
-                          padding: "var(--space-2) var(--space-4)",
-                          border: "var(--border-width) solid white",
-                          backgroundColor: "transparent",
-                          fontFamily: "var(--font-family-inter)",
-                          fontSize: "clamp(0.85rem, 1.5vw, 1rem)",
-                          fontWeight: "var(--font-weight-medium)",
-                          textTransform: "uppercase",
-                          letterSpacing: "0.05em",
+                          marginTop: "var(--space-4)",
                           color: "white",
-                          textDecoration: "none",
-                          borderRadius: "6px",
+                          fontSize: "clamp(1rem, 2vw, 1.25rem)",
                         }}
                       >
-                        {link.name}
-                        <ExternalLink size={16} color="white" />
-                      </a>
-                    ))}
-                  </div>
-                )}
+                        Relevant links:
+                      </h4>
+
+                      {projectData.deliverables.links.map((link, idx) => (
+                        <motion.a
+                          key={idx}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            gap: "0.5rem",
+                            cursor: "pointer",
+                            padding: "var(--space-2) var(--space-4)",
+                            border: "var(--border-width) solid white",
+                            backgroundColor: "transparent",
+                            fontFamily: "var(--font-family-inter)",
+                            fontSize: "clamp(0.85rem, 1.5vw, 1rem)",
+                            fontWeight: "var(--font-weight-medium)",
+                            textTransform: "uppercase",
+                            letterSpacing: "0.05em",
+                            color: "white",
+                            textDecoration: "none",
+                            borderRadius: "0.25rem",
+                          }}
+                          whileHover={{
+                            x: 4,
+                            transition: { duration: 0.2, ease: "easeOut" },
+                          }}
+                        >
+                          {link.name}
+                          <ExternalLink size={16} color="white" />
+                        </motion.a>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

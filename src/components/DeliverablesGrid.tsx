@@ -53,7 +53,8 @@ export default function BentoGrid({ items }: BentoGridProps) {
                 height: "auto",
                 display: "block",
                 objectFit: "cover",
-                transition: "transform 0.4s ease",
+                transition: "transform 0.4s ease", 
+                borderRadius: "0.5rem",
               }}
             />
 
@@ -94,7 +95,7 @@ export default function BentoGrid({ items }: BentoGridProps) {
             style={{
               position: "fixed",
               inset: 0,
-              backgroundColor: "rgba(0,0,0,0.85)",
+              backgroundColor: "rgba(0,0,0,0.6)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -102,6 +103,7 @@ export default function BentoGrid({ items }: BentoGridProps) {
               padding: "var(--space-6)",
               boxSizing: "border-box",
               overflowY: "auto",
+              backdropFilter: "blur(8px)",
             }}
             onClick={() => setSelected(null)}
           >
@@ -113,7 +115,7 @@ export default function BentoGrid({ items }: BentoGridProps) {
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 backgroundColor: "var(--background-primary)",
-                borderRadius: "var(--radius-lg)",
+                borderRadius: "1rem",
                 border: "var(--border-width) solid var(--border-color)",
                 width: "min(80vw, 900px)",
                 maxHeight: "90vh",

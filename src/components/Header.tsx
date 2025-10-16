@@ -67,58 +67,55 @@ export default function Header({
               opacity: showNav ? 1 : 0,
             }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="hidden md:flex mt-2"
+            className="hidden md:flex mt-2 border"
+            style={{borderRadius:"3rem", overflow:"hidden"}}
           >
-            {["ABOUT", "PROJECTS", "CONTACT"].map(
-              (item, index) => (
-                <p
-                  key={item}
-                  className="cursor-pointer transition-colors duration-200"
-                  style={{
-                    width: "128px",
-                    height: "var(--space-5)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    backgroundColor:
-                      currentPage === item ||
-                      (currentPage === "PROJECT_DETAIL" &&
-                        item === "PROJECTS") ||
-                      (currentPage === "GRAPHICS" &&
-                        item === "PROJECTS")
-                        ? "var(--text-primary)"
-                        : "transparent",
-                    color:
-                      currentPage === item ||
-                      (currentPage === "PROJECT_DETAIL" &&
-                        item === "PROJECTS") ||
-                      (currentPage === "GRAPHICS" &&
-                        item === "PROJECTS")
-                        ? "var(--text-inverse)"
-                        : "var(--text-primary)",
-                    borderLeft:
-                      "var(--border-width) solid var(--border-color)",
-                    borderRight:
-                      index === 2
-                        ? "var(--border-width) solid var(--border-color)"
-                        : "none",
-                  }}
-                  onClick={() => {
-                    if (
-                      (currentPage === "PROJECT_DETAIL" ||
-                        currentPage === "GRAPHICS") &&
-                      item === "PROJECTS"
-                    ) {
-                      onBackToProjects?.();
-                    } else {
-                      onPageClick?.(item);
-                    }
-                  }}
-                >
-                  {item}
-                </p>
-              ),
-            )}
+{["ABOUT", "PROJECTS", "CONTACT"].map((item, index) => {
+  const isActive =
+    currentPage === item ||
+    (currentPage === "PROJECT_DETAIL" && item === "PROJECTS") ||
+    (currentPage === "GRAPHICS" && item === "PROJECTS");
+
+  return (
+    <p
+      key={item}
+      className="cursor-pointer transition-all duration-300 ease-in-out"
+      style={{
+        width: "128px",
+        height: "var(--space-5)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: isActive
+          ? "var(--text-primary)"
+          : "transparent",
+        color: isActive
+          ? "var(--text-inverse)"
+          : "var(--text-primary)",
+        borderInline: "var(--border-width) solid var(--border-color)",
+  
+        borderRadius: isActive ? "0rem" : "0rem",
+        transition: "all 0.3s ease-in-out",
+      }}
+      onClick={() => {
+        if (
+          (currentPage === "PROJECT_DETAIL" ||
+            currentPage === "GRAPHICS") &&
+          item === "PROJECTS"
+        ) {
+          onBackToProjects?.();
+        } else {
+          onPageClick?.(item);
+        }
+      }}
+    >
+      {item}
+    </p>
+  );
+})}
+
+
+
           </motion.nav>
 
           {/* Mobile Hamburger Menu - Always visible on mobile */}

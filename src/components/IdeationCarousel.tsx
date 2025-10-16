@@ -186,6 +186,7 @@ useEffect(() => {
                 src={image}
                 alt={`Slide ${i + 1}`}
                 style={{
+                  borderRadius: "0.5rem",
                   objectFit: "cover",
                   boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
                   backgroundColor: "#111",

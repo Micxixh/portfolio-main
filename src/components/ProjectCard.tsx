@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { Project } from "../api/projectsApi";
+import { Project } from "../api/optimizedProjectsApi";
 
 // Animation configuration
 const ANIMATION_CONFIG = {
@@ -40,15 +40,25 @@ export default function ProjectCard({
         isSelected ? "z-10" : "z-5"
       }`}
       onClick={() => onSelect(project)}
+                style={{
+            borderRadius:"1rem",
+            overflow:"hidden"
+          }}
     >
       {/* Project Image */}
+    <div           
+        style={{
+            border: "var(--border-width) solid var(--border-color)",
+            borderRadius:"1rem",
+            overflow:"hidden"
+          }}>
       <div className="relative overflow-hidden aspect-[3/2]">
         <motion.div
-          className="absolute inset-0"
           style={{
             border: "var(--border-width) solid var(--border-color)",
+            overflow:"hidden"
           }}
-          whileHover={{ scale: 1.02 }}
+          whileHover={{ scale: 1.05}}
           transition={{
             duration: ANIMATION_CONFIG.HOVER_DURATION,
             ease: "easeInOut",
@@ -57,25 +67,13 @@ export default function ProjectCard({
           <ImageWithFallback
             src={project.image}
             alt={`${project.name} project showcase`}
-            className="w-full h-full object-cover"
-          />
-          
-          {/* Hover Overlay */}
-          <motion.div
-            className="absolute inset-0 bg-black"
-            initial={{ opacity: 0 }}
-            whileHover={{ opacity: 0.1 }}
-            transition={{
-              duration: ANIMATION_CONFIG.HOVER_DURATION,
-              ease: "easeInOut",
-            }}
           />
         </motion.div>
       </div>
-
+    </div>
       {/* Project Info */}
       <motion.div
-        className="mt-4 md:mt-6 mobile-project-card"
+        className="mt-4 md:mt-6 flex flex-col mobile-project-card"
         initial={{ y: 20 }}
         animate={{ y: 0 }}
         transition={{
@@ -83,11 +81,11 @@ export default function ProjectCard({
           ease: ANIMATION_CONFIG.CARD_TRANSITION.EASING,
           delay: (index * ANIMATION_CONFIG.STAGGER_DELAY) + 0.2,
         }}
+        style={{gap:"var(--space-2)"}}
       >
         {/* Category & Year */}
         <div 
           className="flex items-center justify-between mb-1 md:mb-2"
-          style={{ gap: "var(--space-2)" }}
         >
           <span
             style={{
@@ -125,74 +123,9 @@ export default function ProjectCard({
             marginBottom: "var(--space-1)",
           }}
         >
-          {project.title}
+          {project.name}
         </h3>
 
-        {/* Project Name */}
-        <h4
-          style={{
-            fontFamily: "var(--font-family-roboto-mono)",
-            fontSize: "var(--text-base)",
-            fontWeight: "var(--font-weight-normal)",
-            color: "var(--text-primary)",
-            marginBottom: "var(--space-2)",
-          }}
-        >
-          {project.name}
-        </h4>
-
-        {/* Tags */}
-        <div 
-          className="flex flex-wrap"
-          style={{ gap: "var(--space-1)" }}
-        >
-          {(project.tags || []).slice(0, 3).map((tag, tagIndex) => (
-            <span
-              key={tagIndex}
-              style={{
-                fontFamily: "var(--font-family-roboto-mono)",
-                fontSize: "var(--text-sm)",
-                fontWeight: "var(--font-weight-normal)",
-                color: "var(--text-primary)",
-                padding: "var(--space-1) var(--space-2)",
-                border: "var(--border-width) solid var(--border-color)",
-                textTransform: "uppercase",
-                letterSpacing: "0.02em",
-              }}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-
-        {/* Hover Indicator */}
-        <motion.div
-          className="mt-4 flex items-center"
-          style={{ gap: "var(--space-2)" }}
-          initial={{ opacity: 0, x: -10 }}
-          whileHover={{ opacity: 1, x: 0 }}
-          transition={{
-            duration: ANIMATION_CONFIG.HOVER_DURATION,
-            ease: "easeInOut",
-          }}
-        >
-          <div
-            className="w-6 h-px"
-            style={{ backgroundColor: "var(--text-primary)" }}
-          />
-          <span
-            style={{
-              fontFamily: "var(--font-family-inter)",
-              fontSize: "var(--text-sm)",
-              fontWeight: "var(--font-weight-medium)",
-              color: "var(--text-primary)",
-              textTransform: "uppercase",
-              letterSpacing: "0.05em",
-            }}
-          >
-            View Project
-          </span>
-        </motion.div>
       </motion.div>
 
       {/* Selection Indicator */}
