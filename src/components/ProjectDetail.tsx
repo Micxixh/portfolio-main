@@ -743,10 +743,9 @@ useEffect(() => {
           >
             <div
               style={{
-                maxWidth: "1920px",
+                maxWidth: "1080px",
                 width: "100%",
                 padding: "var(--space-6)",
-                borderInline: "1px solid white",
                 gap: "var(--space-2)",
                 display: "flex",
                 flexDirection: "column",
