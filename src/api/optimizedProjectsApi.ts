@@ -1,3 +1,5 @@
+import { Building } from "lucide-react";
+
 export interface Deliverable {
   name: string;
   description: string;
@@ -14,7 +16,7 @@ export interface DeliverableLink {
 export interface DeliverablesSection {
   items: Deliverable[];           // flattened deliverables
   links?: DeliverableLink[];      // links relevant to the whole section
-  decisions?: string[];           // final decisions/rationale for this section
+  summary?: string[];           // final decisions/rationale for this section
 }
 
 export interface Project {
@@ -247,12 +249,12 @@ export const optimizedProjects: Project[] = [
         links: [
           { name: "View Full Website", url: "https://ashemag.netlify.app/" },
         ],
-        decisions: [
-          "Chose a muted, sophisticated color palette to let imagery stand out while maintaining a cohesive brand feel.",
-          "Balanced serif and sans-serif typography to convey both creativity and professionalism.",
-          "Prioritized white space and clean layouts to enhance readability and visual hierarchy.",
-          "Integrated handwritten elements sparingly to add a personal, human touch without overwhelming the design.",
-        ],   
+        summary: [
+          "For the final execution, I chose to develop the Modern-Baroque direction (Concept 1). This aesthetic felt most aligned with Ashé’s mission; to honour the dignity and sophistication of creative work while challenging the perception that successful artistic careers are unserious. The use of classical visual cues, refined typography, structured layouts, and ornamental details—associates creativity with respectability, flourishing, and cultural value.",
+          "Visually, this direction also stands apart from competitors such as GUAP, New Wave, Dazed, and Hunger. While it shares key design principles like minimal colour palettes and clean composition to allow imagery to shine, it maintains a distinctly elegant and timeless tone that feels premium and intellectual.",
+          "The second direction, with its hand-drawn flourishes, offered a tactile and expressive quality but lacked the scalability to function as a cohesive brand system across multiple touchpoints. The third direction leaned too heavily into futuristic and sci-fi visual language, distancing it from the grounded cultural richness central to Ashé’s identity.",
+          "Building on the Modern-Baroque foundation, I developed comprehensive brand guidelines, print and social media mockups, and a responsive website, ensuring that Ashé maintains visual consistency, emotional resonance, and a strong market distinction across every platform."
+        ],
       },
       reflection: {
         learnings:

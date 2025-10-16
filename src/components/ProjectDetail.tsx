@@ -37,6 +37,7 @@ export default function ProjectDetail({
   const [expandedVideo, setExpandedVideo] = useState(false);
   const [expandedDeliverables, setExpandedDeliverables] = useState(new Set<number>());
   const [showComparisonModal, setShowComparisonModal] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   // Memoize calculations to prevent re-renders
   const nextProject = useMemo(() => {
@@ -91,6 +92,7 @@ export default function ProjectDetail({
   }, [expandedPrototype, expandedVideo, showComparisonModal]);
 
     const [isMobile, setIsMobile] = useState(false);
+  const summaries = projectData.deliverables?.summary || [];
 
 useEffect(() => {
   const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -694,94 +696,178 @@ useEffect(() => {
             )}
         </motion.section>
 
-        <motion.section
-          id="deliverables"
-          style={{ marginBottom: "var(--space-12)" }}
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            duration: 0.8,
-            ease: [0.16, 1, 0.3, 1],
-            delay: 0.6,
+      <motion.section
+        id="deliverables"
+        style={{
+          marginBottom: "var(--space-12)",
+          backgroundColor: "black",
+          color: "white",
+        }}
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{
+          duration: 0.8,
+          ease: [0.16, 1, 0.3, 1],
+          delay: 0.6,
+        }}
+      >
+        {/* Section Header */}
+        <div
+          style={{
+            width: "100%",
+            borderBottom: "1px solid white",
+            padding: "var(--space-3)",
+            textAlign: "center",
           }}
         >
-          {/* Section Header */}
+          <h1>Final Deliverables</h1>
+        </div>
+        {/* Summary & Links */}
+        <div
+          style={{
+            backgroundColor: "black",
+            color: "white",
+          }}
+        >
           <div
             style={{
+              margin: "0 auto",
+              textAlign: "left",
+              borderBottom: "var(--border-width) solid white",
+              alignItems: "center",
+              justifyContent: "left",
+              display: "flex",
+              flexDirection: "column",
               width: "100%",
-              borderBottom: "var(--border-width) solid var(--border-color)",
-              padding: "var(--space-3)",
-              textAlign: "center",
-              color: "white",
-              backgroundColor: "black",
             }}
           >
-            <h2>Final Deliverables</h2>
-          </div>
-
-          {/* Section-Level Links (below header) */}
-          {projectData.deliverables?.links && projectData.deliverables.links.length > 0 && (
             <div
               style={{
-                marginTop: "var(--space-4)",
-                textAlign: "center",
+                maxWidth: "1920px",
+                width: "100%",
+                padding: "var(--space-6)",
+                borderInline: "1px solid white",
+                gap: "var(--space-2)",
                 display: "flex",
-                justifyContent: "center",
-                flexWrap: "wrap",
-                gap: "var(--space-4)",
-                borderBottom: "var(--border-width) solid var(--border-color)",
-                paddingBottom: "var(--space-6)",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
               }}
             >
-              {projectData.deliverables.links.map((link, idx) => (
-                <a
-                  key={idx}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                    cursor: "pointer",
-                    padding: "var(--space-2) var(--space-4)",
-                    border: "var(--border-width) solid var(--border-color)",
-                    backgroundColor: "transparent",
-                    fontFamily: "var(--font-family-inter)",
-                    fontSize: "var(--text-sm)",
-                    fontWeight: "var(--font-weight-medium)",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.05em",
-                    color: "var(--text-primary)",
-                    textDecoration: "none",
-                        }}
-                        whileHover={{
-                          x: 4,
-                          transition: { duration: 0.2, ease: "easeOut" },
-                        }}
-                >
-                  {link.name}
-                  <ExternalLink size={16} />
-                </a>
-              ))}
-            </div>
-          )}
+              {/* Summary */}
+              <h4 style={{ color: "white", fontSize: "clamp(1rem, 2vw, 1.25rem)" }}>
+                Summary
+              </h4>
+              <p style={{ color: "white", fontSize: "clamp(0.9rem, 1.8vw, 1rem)" }}>
+                {(expanded ? summaries : summaries.slice(0, 1)).map((paragraph, idx) => (
+                  <span
+                    key={idx}
+                    style={{
+                      display: "block",
+                      marginBottom: "var(--space-2)",
+                      lineHeight: "1.6",
+                    }}
+                  >
+                    {paragraph}
+                    {expanded ? "" : idx === 0 ? ".." : ""}
+                  </span>
+                ))}
 
-          {/* Full-Bleed Bento Grid */}
-          <div >
-            {(() => {
-              const gridItems =
-                projectData.deliverables?.items?.map((d) => ({
-                  name: d.name,
-                  image: d.image,
-                  description: d.description,
-                  tags: d.tags ?? [],
-                  link: d.link,
-                })) || [];
-              return <BentoGrid items={gridItems} />;
-            })()}
+                {summaries.length > 1 && (
+                  <button
+                    onClick={() => setExpanded(!expanded)}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      color: "white",
+                      cursor: "pointer",
+                      textDecoration: "underline",
+                      fontFamily: "var(--font-family-inter)",
+                      fontSize: "clamp(0.85rem, 1.5vw, 0.95rem)",
+                      marginTop: "var(--space-1)",
+                    }}
+                  >
+                    {expanded ? "Show less" : "Show more"}
+                  </button>
+                )}
+              </p>
+              <div style={{ width: "100%", display: "flex", flexDirection: "row", gap: "var(--space-4)" }}>
+
+              {/* Relevant Links */}
+              {projectData.deliverables?.links &&
+                projectData.deliverables.links.length > 0 && (
+                  <div
+                    style={{
+                      textAlign: "left",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      gap: "var(--space-2)",
+                    }}
+                  >
+                    <h4
+                      style={{
+                        marginTop: "var(--space-4)",
+                        color: "white",
+                        fontSize: "clamp(1rem, 2vw, 1.25rem)",
+                      }}
+                    >
+                      Relevant links:
+                    </h4>
+
+                    {projectData.deliverables.links.map((link, idx) => (
+                      <a
+                        key={idx}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          gap: "0.5rem",
+                          cursor: "pointer",
+                          padding: "var(--space-2) var(--space-4)",
+                          border: "var(--border-width) solid white",
+                          backgroundColor: "transparent",
+                          fontFamily: "var(--font-family-inter)",
+                          fontSize: "clamp(0.85rem, 1.5vw, 1rem)",
+                          fontWeight: "var(--font-weight-medium)",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.05em",
+                          color: "white",
+                          textDecoration: "none",
+                          borderRadius: "6px",
+                        }}
+                      >
+                        {link.name}
+                        <ExternalLink size={16} color="white" />
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
-        </motion.section>
+        </div>
+
+
+        {/* Full-Bleed Bento Grid */}
+        <div>
+          {(() => {
+            const gridItems =
+              projectData.deliverables?.items?.map((d) => ({
+                name: d.name,
+                image: d.image,
+                description: d.description,
+                tags: d.tags ?? [],
+                link: d.link,
+              })) || [];
+            return <BentoGrid items={gridItems} />;
+          })()}
+        </div>
+      </motion.section>
+
 
 
 
