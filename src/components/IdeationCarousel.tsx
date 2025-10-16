@@ -186,8 +186,8 @@ function DirectionCarousel({ images }: { images: string[] }) {
               }`}
               style={{
                 width: "100vw",
-                maxWidth: "70vw",
-                height: "80vh",
+                maxWidth: "50vw",
+                height: "auto",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -198,7 +198,7 @@ function DirectionCarousel({ images }: { images: string[] }) {
                 alt={`Slide ${i + 1}`}
                 style={{
                   borderRadius: "0.5rem",
-                  objectFit: "cover",
+                  objectFit: "contain",
                   boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
                   backgroundColor: "#111",
                   width: "100%", 
