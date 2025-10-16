@@ -18,7 +18,6 @@ export default function About() {
         className="mobile-about-content-area"
         style={{ 
           width: '100%', 
-          height: '100vh',
           overflowY: 'scroll',
           padding: 'var(--space-8)',
           borderLeft: '1px solid var(--border-color)',
