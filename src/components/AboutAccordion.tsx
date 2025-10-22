@@ -48,9 +48,9 @@ export default function About() {
         <section style={{border:"1px solid black", padding:"var(--space-4", borderRadius:"0.5rem"}}>
           <h3 style={{ marginBottom: 'var(--space-2)' }}>Who I Am</h3>
           <p>
-            I’m a designer and illustrator based in the UK, passionate about merging visual storytelling
+            I’m a visual/product designer based in the UK, passionate about merging visual storytelling
             with human-centered design. My work often explores the intersection between culture,
-            technology, and community—especially within the Black creative space.
+            technology, and community.
           </p>
         </section>
 
@@ -58,7 +58,7 @@ export default function About() {
         <section style={{border:"1px solid black", padding:"var(--space-4", borderRadius:"0.5rem"}}>
           <h3 style={{ marginBottom: 'var(--space-2)' }}>My Approach</h3>
           <p>
-            With a background in visual arts and branding, I bring a strong aesthetic sensibility
+            My background is in visual arts and branding, I bring a strong aesthetic sensibility
             to UX and digital design. I believe great design should feel intentional, emotional, 
             and grounded in real stories.
           </p>
