@@ -249,7 +249,7 @@ export const optimizedProjects: Project[] = [
           },
         ],
         links: [
-          { name: "View Full Website", url: "https://ashemag.netlify.app/" },
+          { name: "View Full Website", url: "https://ashemagazine.netlify.app/" },
         ],
         summary: [
           "For the final execution, I chose to develop the Modern-Baroque direction (Concept 1). This aesthetic felt most aligned with Ashé’s mission; to honour the dignity and sophistication of creative work while challenging the perception that successful artistic careers are unserious. The use of classical visual cues, refined typography, structured layouts, and ornamental details—associates creativity with respectability, flourishing, and cultural value.",
