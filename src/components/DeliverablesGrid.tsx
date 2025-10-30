@@ -93,6 +93,7 @@ export default function BentoGrid({ items }: BentoGridProps) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             style={{
+              marginTop:"var(--space-10)",
               position: "fixed",
               inset: 0,
               backgroundColor: "rgba(0,0,0,0.6)",

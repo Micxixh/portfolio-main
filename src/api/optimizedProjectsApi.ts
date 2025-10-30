@@ -1,22 +1,13 @@
-import { Building } from "lucide-react";
-
-export interface Deliverable {
-  name: string;
-  description: string;
-  image: string;
-  tags: string[]; // e.g. ["UI", "Web", "Social Media"]
-  link?: string;
+export interface StrategicInsight {
+  title: string;
+  insight: string;
 }
 
-export interface DeliverableLink {
-  name: string; // Display name for the link
-  url: string;  // Actual URL
-}
-
-export interface DeliverablesSection {
-  items: Deliverable[];           // flattened deliverables
-  links?: DeliverableLink[];      // links relevant to the whole section
-  summary?: string[];           // final decisions/rationale for this section
+export interface DocumentLink {
+  title: string;
+  url: string;
+  type?: "PDF" | "Google Doc" | "Notion" | "Figma" | "Other";
+  description?: string;
 }
 
 export interface Project {
@@ -26,33 +17,77 @@ export interface Project {
   category: string;
   description: string;
   image: string;
-  caseStudy?: {
-    overview: {
-      context: string;
-      tools: string[];
-      deliverables?: (string | { name: string; link?: string })[];
-    };
-    research?: {
-      competitorAnalysisLink?: string;
-      audienceResearchLink?: string;
-      keyFindings?: string;
-      designImplications?: string;
-      strategicInsights?: string[];
-    };
-    ideation?: {
-      directions?: {
-        name: string;
-        description: string;
-        images?: string[];
-      }[];
-    };
-    deliverables?: DeliverablesSection;
-    reflection?: {
-      learnings?: string;
-      collaboration?: string;
-      constraints?: string;
-      finalOutcome?: string;
-    };
+  caseStudy?: CaseStudy;
+  documents?: DocumentLink[];
+}
+
+export interface CompetitorProfile {
+  name: string;
+  toneOfVoice: string;
+  mission: string;
+  positioning: string;
+  visualStyle: string;
+  contentOffering: string;
+  strengths: string[];
+  limitations: string[];
+}
+
+export interface CompetitorAnalysis {
+  overview: string;
+  competitors: CompetitorProfile[];
+  documents?: DocumentLink[];
+}
+
+export interface ResearchSection {
+  competitorAnalysis?: CompetitorAnalysis;
+  audienceResearchLink?: string;
+  keyFindings?: string;
+  designImplications?: string;
+  strategicInsights?: StrategicInsight[]; // ✅ updated to use objects instead of strings
+  additionalDocs?: DocumentLink[];
+}
+
+export interface Deliverable {
+  name: string;
+  description: string;
+  image: string;
+  tags: string[];
+  link?: string;
+}
+
+export interface DeliverableLink {
+  name: string;
+  url: string;
+}
+
+export interface DeliverablesSection {
+  items: Deliverable[];
+  links?: DeliverableLink[];
+  summary?: string[];
+}
+
+export interface IdeationDirection {
+  name: string;
+  description: string;
+  images?: string[];
+}
+
+export interface CaseStudy {
+  overview: {
+    context: string;
+    tools: string[];
+    deliverables?: (string | { name: string; link?: string })[];
+  };
+  research?: ResearchSection;
+  ideation?: {
+    directions?: IdeationDirection[];
+  };
+  deliverables?: DeliverablesSection;
+  reflection?: {
+    learnings?: string;
+    collaboration?: string;
+    constraints?: string;
+    finalOutcome?: string;
   };
 }
 
@@ -60,8 +95,10 @@ export interface Project {
 
 
 
+
 // --- Export your optimizedProjects array ---
 export const optimizedProjects: Project[] = [
+  // === PROJECT 01 — ASHE MAGAZINE === //
   {
     id: "ashe-magazine",
     year: "2025",
@@ -69,7 +106,8 @@ export const optimizedProjects: Project[] = [
     category: "Editorial Design / Web Design",
     description:
       "A creative platform and publication empowering emerging artists and designers through storytelling, opportunity, and community.",
-    image: "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760298162/site_mockup_an0bsf.jpg",
+    image:
+      "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760298162/site_mockup_an0bsf.jpg",
 
     caseStudy: {
       overview: {
@@ -86,26 +124,116 @@ export const optimizedProjects: Project[] = [
       },
 
       research: {
-        competitorAnalysisLink:
-          "https://docs.google.com/spreadsheets/d/1wxDWTxxMAIh-7Ql3FfQHsDjWPIeInSY2pGoaSPlCM5M/edit?usp=sharing",
-        audienceResearchLink:
-          "https://drive.google.com/file/d/1Nahmz1jRkhHcNWs5_lKx6J_0AwboweTX/view?usp=sharing",
-        keyFindings:
-          "Many creatives felt unseen or undervalued in mainstream design spaces. They sought practical guidance and emotional affirmation.",
-        designImplications:
-          "Design needed to balance sophistication and warmth — business and art — through typography, tone, and imagery.",
-        strategicInsights: [
-          "Editorial brands tend to use a muted or monochrome color palette (with one accent color in some cases) to accommodate for a wide breadth of imagery whilst remaining stylistically recognizable similarly other brands that prioritize images such as Pinterest and Instagram take a similar approach, thus differentiation through other elements of visual language are key.",
-          "Many competitor publications overload pages with dense blocks of text or inconsistent typography, which can overwhelm readers and reduce content engagement. Prioritizing clear hierarchy, usage of imagery/iconography to 'break up' content, and ample white space ensures information is digestible while maintaining a premium, professional feel.",
-          "Guap being an industry leader in the editorial space, demonstrates how to successfully adopt a conversational, informal tone, whilst maintaining a professional demeanor. Makes complex business, financial, and economic concepts more approachable. Competitors often use formal or semi-formal language, which can act as a barrier for creatives who are less familiar with industry jargon.",
-        ],
+        competitorAnalysis: {
+          overview: "This competitor analysis compares Ashe Magazine with Bricks, Guap, Dazed, and Hunger, focusing on tone of voice, mission, positioning, visual style, content offering, strengths, and limitations.",
+          competitors: [
+            {
+              name: "Bricks",
+              toneOfVoice: "Semi-formal but expressive and friendly",
+              mission: "A platform exploring socio-political issues within fashion, music, arts and culture while amplifying activist voices (BLM, Climate change, trans rights).",
+              positioning: "Independent, queer-led, activist-minded platform bridging fashion, art, and culture with progressive politics. Audience: young creatives, queer/LGBTQ+ community.",
+              visualStyle: "Bold, neon, high-contrast colours, stretched sans serif typography, cyber-influenced Y2K aesthetics, sleek yet retro-futurist, clean structured layout.",
+              contentOffering: "Print and digital journalism/editorial. Focus: Fashion, art, music, activism. Bi-annual.",
+              strengths: [
+                "Skews toward young, progressive, activist-minded creatives",
+                "Integrates popular aesthetics (Y2K, cyber, drag influences)",
+                "Authentically connected to cultural communities"
+              ],
+              limitations: [
+                "Header hover interaction briefly reduces contrast",
+                "Potential over-reliance on neon colours",
+                "Highly niche focus may alienate general audience"
+              ]
+            },
+            {
+              name: "Guap",
+              toneOfVoice: "Informal, conversational and enthusiastic",
+              mission: "Tells unseen and authentic stories that inspire, entertain, and have long-lasting impact on pop culture.",
+              positioning: "Targeting young, aspiring creatives. Leading UK youth culture platform connecting emerging creatives across music, fashion, business, lifestyle.",
+              visualStyle: "Minimal black-and-white palette, semi-bold sans serif typography, polished, micro-interactions, controlled spacing.",
+              contentOffering: "Digital editorial, print, events, brand collaborations. Bi-annual.",
+              strengths: [
+                "High visual polish and professionalism",
+                "Balances polish with conversational tone",
+                "Credible and forward-thinking"
+              ],
+              limitations: [
+                "Tone can sometimes feel too informal for serious topics",
+                "Limited coverage on activist/social issues compared to peers",
+                "Print presence is small, may limit reach"
+              ]
+            },
+            {
+              name: "Dazed",
+              toneOfVoice: "Semi-formal with a polished but conversational tone",
+              mission: "Champion radical fashion and youth culture; defining the times alongside next-generation creators.",
+              positioning: "Gen Z and younger Millennials (16–30), politically aware, aesthetically experimental. Platform for alternative and underground creators.",
+              visualStyle: "Bold eclecticism, black-and-white foundations with bursts of saturated tones, experimental typography, non-uniform layout.",
+              contentOffering: "Print, digital editorial, events. Bi-annual.",
+              strengths: [
+                "Strong appeal to fashion-forward, visually attuned audience",
+                "Disruptive, avant-garde content",
+                "Distinctive typographic hierarchy"
+              ],
+              limitations: [
+                "Eclectic design may feel chaotic for new readers",
+                "Content sometimes prioritizes style over accessibility",
+                "Not as strong in digital-only audience engagement"
+              ]
+            },
+            {
+              name: "Hunger",
+              toneOfVoice: "Informal, heavy use of humour and colloquialisms",
+              mission: "Platform for those hungry for alternative perspectives and creative inspiration.",
+              positioning: "Gen-Z creatives, especially visual creatives; prioritizes long-form photography and glossy editorials over rapid news.",
+              visualStyle: "Restrained colour scheme (dark grey/off-white), strong contrast typography, mix of modern headings and classic serif body, vintage-meets-modern feel.",
+              contentOffering: "Print, digital editorial, events. Bi-annual.",
+              strengths: [
+                "Sophisticated and restrained aesthetic",
+                "Timeless visual character",
+                "Appeals to visual creatives"
+              ],
+              limitations: [
+                "Limited topical coverage; focuses more on visual/artistic content than social issues",
+                "Tone and humour can feel inconsistent across pieces",
+                "Smaller editorial team may limit frequency of updates"
+              ]
+            }
+          ],
+          documents: [
+            {
+              title: "Competitor Analysis Spreadsheet",
+              url: "https://docs.google.com/spreadsheets/d/1wxDWTxxMAIh-7Ql3FfQHsDjWPIeInSY2pGoaSPlCM5M/edit?usp=sharing",
+              type: "Google Doc"
+            }
+          ]
       },
+      audienceResearchLink: "https://drive.google.com/file/d/14UjojnnXCpFsZBF-yCnvcit9uB0j8cxT/preview",
+      strategicInsights: [
+        {
+          title: "Visual Differentiation Beyond Color",
+          insight:
+            "Editorial brands tend to use a muted or monochrome color palette (with one accent color in some cases) to accommodate for a wide breadth of imagery whilst remaining stylistically recognizable. Similarly, other image-led brands such as Pinterest and Instagram take a similar approach — thus differentiation through other elements of visual language is key.",
+        },
+        {
+          title: "Clarity and Readability Drive Engagement",
+          insight:
+            "Many competitor publications overload pages with dense blocks of text or inconsistent typography, which can overwhelm readers and reduce engagement. Prioritizing clear hierarchy, using imagery or iconography to break up content, and maintaining ample white space ensures information is digestible while preserving a premium, professional feel.",
+        },
+        {
+          title: "Conversational Professionalism Builds Accessibility",
+          insight:
+            "Guap, as an industry leader, demonstrates how to adopt a conversational, informal tone while maintaining professionalism. This makes complex business, financial, and economic concepts more approachable. Competitors often rely on formal or semi-formal language, which can alienate creatives unfamiliar with industry jargon.",
+        },
+      ],
+    },
 
       ideation: {
         directions: [
           {
             name: "Modern x Baroque",
-            description: "This direction fuses historical portraiture with modern celebrity culture. Contained images, grainy textures, and baroque-inspired lighting present figures like Gabriel Moses as subjects of old master paintings. Off-white backgrounds, serif typefaces, and vintage filters evoke heritage and “old money” prestige, while clean sans-serif text adds a modern edge. Celestial elements—stars and cosmic motifs—suggest aspiration and wonder, reflecting Ashe’s mission to elevate emerging creatives. The result is a look of sophistication, timelessness, and creative legacy.",
+            description:
+              "Fuses historical portraiture with modern celebrity culture. Off-white backgrounds, serif typography, and celestial motifs suggest sophistication and creative legacy.",
             images: [
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760214052/Ashe_1B_sziuz8.jpg",
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760214049/Ashe_1A_nrhzw7.jpg",
@@ -113,8 +241,9 @@ export const optimizedProjects: Project[] = [
             ],
           },
           {
-            name: "Handwritten flourishes and texture",
-            description: "This direction highlights the tactile, human side of creativity. Handwritten flourishes paired with clean sans-serif typography create a balance between professionalism and personality. Warm, earthy tones and soft lighting evoke intimacy and authenticity. The logo exploration—mixing serif, sans-serif, and monospace typefaces inspired by Hunger magazine—emphasizes creative range. Grayscale imagery accented by Gabriel Moses’s vibrant red signature adds a bold, avant-garde edge.",
+            name: "Handwritten Flourishes and Texture",
+            description:
+              "Balances professionalism and personality with handwritten flourishes and clean sans-serif typography. Warm tones and texture evoke intimacy and authenticity.",
             images: [
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760214054/Ashe_2A_rcmxgw.jpg",
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760214047/Ashe_2B_w5kygr.jpg",
@@ -123,7 +252,8 @@ export const optimizedProjects: Project[] = [
           },
           {
             name: "Geometric Realism",
-            description:"Ashe Magazine explores the balance between creativity and systems, and this direction reflects that through a faceted, geometric illustration style. Sharp planes and angular rendering give the cover a contemporary, architectural feel—positioning design as both art and structure. By moving away from photorealism to emphasize form and construction, this approach presents creativity as something that can be understood both artistically and systematically.",
+            description:
+              "Reflects Ashe’s focus on creativity and systems through geometric illustration, balancing artistry and structure.",
             images: [
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760214054/Ashe_3A_pwpac9.jpg",
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760214053/Ashe_3B_pgjpqo.jpg",
@@ -138,7 +268,7 @@ export const optimizedProjects: Project[] = [
           {
             name: "Contents Page",
             description:
-              "the design uses precise grids, tonal contrast, and editorial type to echo Ashe’s ethos: creativity elevated through structure.",
+              "Uses precise grids, tonal contrast, and editorial type to echo Ashe’s ethos: creativity elevated through structure.",
             image:
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760215486/Magazine_spread_2_xszgsa.jpg",
             tags: ["Editorial", "Print"],
@@ -146,7 +276,7 @@ export const optimizedProjects: Project[] = [
           {
             name: "Interview Spread",
             description:
-              "Here the grids and shapes create a dynamic visual rhythm and clear structure, while a rounded banner offsets the sense of rigidity, highlighting Ashe’s belief that creativity thrives through balance between creativity and intentional systems.",
+              "Dynamic grids and clear structure balance rigidity with flow, reflecting Ashe’s philosophy that creativity thrives through intentional systems.",
             image:
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760215479/Magazine_spread_1_jgmvla.jpg",
             tags: ["Editorial", "Typography"],
@@ -154,47 +284,47 @@ export const optimizedProjects: Project[] = [
           {
             name: "Feature Article Spread",
             description:
-              "The vertical “REFRAIN” acts as a visual divider, and the interplay between structured typography and bold color reflects Ashe’s belief that creativity thrives within balance.",
+              "Interplay between structured typography and bold color symbolizes balance between art and intention.",
             image:
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760215485/Magazine_spread_3_a3awsd.jpg",
             tags: ["Editorial", "Layout"],
           },
           {
-            name: "Cover variant 01",
+            name: "Cover Variant 01",
             description:
-              "First cover variant for Ashe Magazine, featuring Gabriel Moses. This design takes an unconventional approach by positioning the masthead at the bottom, evoking the layout of a Polaroid photograph. The choice reinforces Ashe’s philosophy of placing the creative above the brand, framing Moses as the central subject rather than a contributor to the publication. The grainy texture and subdued tones add a vintage warmth, balancing nostalgia with modern minimalism. The composition and tactile aesthetic capture Ashe’s core identity: a publication that celebrates creativity with both emotional depth and structural intent.",
+              "Unconventional layout with bottom masthead like a Polaroid — framing creatives as subjects of focus over brand hierarchy.",
             image:
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760214049/Ashe_1A_nrhzw7.jpg",
             tags: ["Cover", "Typography"],
           },
           {
-            name: "Cover variant 02",
+            name: "Cover Variant 02",
             description:
-              "This is a more conventional layout than the first variant, placing the masthead at the top and the image is full bleed. It more heavily utilises the gridline/blueprint motif, with the gridlines extending into the image itself. The serif typeface adds a touch of classic sophistication, while the off-white background and muted tones maintain a modern, minimalist aesthetic. Overall, this cover balances traditional editorial design elements with contemporary style, reflecting Ashe’s mission to elevate emerging creatives through thoughtful, intentional design.",
+              "Refined balance between traditional editorial design and modern minimalism. Gridlines extend into imagery.",
             image:
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760214052/Ashe_1B_sziuz8.jpg",
             tags: ["Cover", "Photography"],
           },
           {
-            name: "Cover variant 03",
+            name: "Cover Variant 03",
             description:
-              "This is the most conventional layout with the image taking up the full cover and the masthead at the top. Though here it stands out as the type is used as a framing device for the image, with the vertical text used to create a strong visual focal point.",
+              "Full-bleed image and vertical text frame create visual focus and contemporary impact.",
             image:
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760214056/Ashe_1C_pmwiwj.jpg",
             tags: ["Concept", "Photography"],
           },
           {
-            name: "Social Post template - 9:16",
+            name: "Social Post Template — 9:16",
             description:
-              "Social template for Ashe Magazine featuring Damson Idris. Designed in a 9:16 format with structured grid borders and a central serif caption, the layout blends cinematic warmth with editorial precision. Dramatic lighting, grain, and the top-aligned logo create a cohesive visual language that connects Ashe’s print and digital identity and applies it to a format that is ideal for reels and tiktoks, leaving ample space for the image caption and UI over the video/image.",
+              "Cinematic and structured layout ideal for reels and TikToks, merging warmth with editorial precision.",
             image:
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760217476/social_mockup_9_16_qzfgqr.jpg",
             tags: ["Social Media", "Branding"],
           },
           {
-            name: "Social Post template - 4:5",
+            name: "Social Post Template — 4:5",
             description:
-              "Designed for feed-based platforms like Instagram and Pinterest, this format translates Ashe’s editorial aesthetic into a static, simplified social post. Diagonal gridlines and star motifs introduce movement within structure, while the warm, grainy portrait and refined serif typography maintain the brand’s balance between creativity and systems.",
+              "Adapts Ashe’s aesthetic to static posts with refined serif typography and dynamic diagonals.",
             image:
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760217478/Social_mockup_4_3_iryztq.jpg",
             tags: ["Social Media", "Template"],
@@ -202,7 +332,7 @@ export const optimizedProjects: Project[] = [
           {
             name: "Logo Suite",
             description:
-              "The ASHE Magazine logo suite captures the balance between business principles and creativity, embodying the brand’s mission to empower creatives through strategic insight. The elegant serif wordmark evokes sophistication, professionalism, and legacy, while the star motif symbolizes creativity, illumination, and ambition. Each logo variation; from the commanding primary mark to the refined monogram — ensures flexibility across editorial, digital, and social contexts. The palette of warm neutrals conveys stability and intellect, contrasted by a vivid red that injects energy, urgency, and empowerment. Together, the suite communicates ASHE’s dual identity: refined yet visionary, strategic yet creative.",
+              "Elegant serif wordmark and star motif represent creativity, structure, and ambition. Flexible across contexts.",
             image:
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760350469/Logo_Suite_gw04fi.jpg",
             tags: ["Brand", "Guidelines"],
@@ -210,7 +340,7 @@ export const optimizedProjects: Project[] = [
           {
             name: "Typography Guidelines",
             description:
-              "The ASHE Magazine typography system unites classic sophistication with modern clarity to mirror the brand’s blend of artistry and strategy. Scotch Display Light Italic serves as the expressive core; elegant, high-contrast, and evocative of editorial tradition. It captures ASHE’s refined, aspirational tone. Complementing this, Roboto Light provides a clean, versatile foundation that ensures legibility and approachability across print and digital formats.",
+              "Scotch Display Italic and Roboto Light balance elegance with clarity, mirroring Ashe’s tone.",
             image:
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760350471/Typography_Design_oux2ly.jpg",
             tags: ["Brand", "Typography"],
@@ -218,7 +348,7 @@ export const optimizedProjects: Project[] = [
           {
             name: "Photography Guidelines",
             description:
-              "The ASHE Magazine photography guidelines establish the visual language for imagery across all platforms. They emphasize the importance of composition, lighting, and subject matter in creating impactful visuals. The guidelines encourage a cinematic approach, with a focus on storytelling and emotional resonance. By providing clear direction on image selection and treatment, these guidelines ensure a cohesive and compelling visual identity for the brand.",
+              "Cinematic composition, storytelling focus, and emotional resonance establish cohesive visual tone.",
             image:
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760350472/Photography_Guide_jbbj4e.jpg",
             tags: ["Brand", "Layout"],
@@ -226,7 +356,7 @@ export const optimizedProjects: Project[] = [
           {
             name: "Website Snapshot — Featured Article Page",
             description:
-              "The ASHE Magazine featured articles page showcases the brand’s editorial sophistication and digital clarity. Designed with a clean, structured layout, it balances expressive typography with ample negative space to create a refined reading experience. The use of Scotch Display for headlines evokes elegance and authority, while the neutral color palette and minimal interface keep focus on the content and imagery. High-quality, cinematic photography enhances storytelling, pairing visual depth with thoughtful editorial design.",
+              "Structured, refined layout balancing expressive type with negative space for an elegant reading experience.",
             image:
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760353058/desktop_q2vpgd.jpg",
             tags: ["Web", "UI"],
@@ -234,7 +364,7 @@ export const optimizedProjects: Project[] = [
           {
             name: "Website Snapshot — Featured Article Page (Tablet)",
             description:
-              "This layout translates the desktop’s sophistication into a touch-friendly, mobile-responsive interface. The visual hierarchy is clear, the article imagery is the primary focal point. The use of transparency and layered composition adds depth and cinematic quality, aligning with ASHE’s brand tone of artistry and professionalism. The typography preserves the brand’s editorial feel, with elegant serif headlines and clean sans-serif details, ensuring legibility on mid-sized screens. The navigation is minimal and intuitive, reflecting a luxury digital publication aesthetic; polished, immersive, and user-focused.",
+              "Translates desktop sophistication into touch-optimized format with clear hierarchy and depth.",
             image:
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760353083/Tablet_ljcuaw.jpg",
             tags: ["Web", "Responsive"],
@@ -242,7 +372,7 @@ export const optimizedProjects: Project[] = [
           {
             name: "Website Snapshot — Film Articles Page (Mobile)",
             description:
-              "The art/design section of the ASHE Magazine site presents its content in a minimal, vertically structured format optimized for mobile. Each article is showcased with a striking portrait-style image, accompanied by a refined typographic layout beneath. The page highlights the article — “JR’s Street Art to Museum: Monetizing Public Art Without Selling Out” — using generous spacing, soft cream tones, and high-contrast black accents. Metadata such as date, reading time, and author are clearly listed, maintaining editorial credibility and clarity.",
+              "Minimal, vertical layout optimized for mobile readability and editorial credibility.",
             image:
               "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760353070/mobile_rqkhzc.jpg",
             tags: ["Web", "Mobile"],
@@ -252,47 +382,277 @@ export const optimizedProjects: Project[] = [
           { name: "View Full Website", url: "https://ashemagazine.netlify.app/" },
         ],
         summary: [
-          "For the final execution, I chose to develop the Modern-Baroque direction (Concept 1). This aesthetic felt most aligned with Ashé’s mission; to honour the dignity and sophistication of creative work while challenging the perception that successful artistic careers are unserious. The use of classical visual cues, refined typography, structured layouts, and ornamental details—associates creativity with respectability, flourishing, and cultural value.",
-          "Visually, this direction also stands apart from competitors such as GUAP, New Wave, Dazed, and Hunger. While it shares key design principles like minimal colour palettes and clean composition to allow imagery to shine, it maintains a distinctly elegant and timeless tone that feels premium and intellectual.",
-          "The second direction, with its hand-drawn flourishes, offered a tactile and expressive quality but lacked the scalability to function as a cohesive brand system across multiple touchpoints. The third direction leaned too heavily into futuristic and sci-fi visual language, distancing it from the grounded cultural richness central to Ashé’s identity.",
-          "Building on the Modern-Baroque foundation, I developed comprehensive brand guidelines, print and social media mockups, and a responsive website, ensuring that Ashé maintains visual consistency, emotional resonance, and a strong market distinction across every platform."
+          "Final direction: Modern-Baroque — associating creativity with sophistication and cultural value.",
+          "Balanced minimalism and elegance for strong brand differentiation.",
+          "Alternative concepts lacked either scalability or alignment with Ashe’s cultural tone.",
+          "Delivered brand guidelines, print and social mockups, and responsive website ensuring cohesion.",
         ],
       },
+
       reflection: {
         learnings:
-          "Ashe taught me the art of merging emotional storytelling with structural clarity. Sophistication doesn’t have to mean sterility — it can feel alive.",
+          "Merging emotional storytelling with structural clarity — sophistication can feel alive.",
         collaboration:
-          "Worked with local photographers and writers to develop a unified narrative voice.",
+          "Worked with local photographers and writers to unify brand voice.",
         constraints:
-          "Limited resources and time demanded intentional design restraint — everything had to serve the message.",
+          "Limited time and resources required disciplined design restraint.",
         finalOutcome:
           "Delivered a cohesive editorial identity and digital experience that embodies creativity grounded in purpose.",
       },
     },
   },
+
+  // === PROJECT 02 — INCOMPLEX === //
+  {
+    id: "incomplex",
+    year: "2025",
+    name: "Incomplex",
+    category: "Brand Identity / Web Design / UI Design",
+    description:
+      "A startup agency and contractor network that integrates into organizations to fill technical gaps, offering web and app development, maintenance, UI/UX, and AI integration services.",
+    image:
+      "https://res.cloudinary.com/dfsmaylfo/image/upload/v1761691159/Main_image_hzbe9q.jpg",
+
+    caseStudy: {
+      overview: {
+        context:
+          "Incomplex is a startup and flexible contractor network designed to embed within organizations, providing technical expertise. The brand required a distinct identity and responsive site communicating clarity and integration.",
+        tools: ["Figma", "React", "TypeScript", "Illustrator", "Framer Motion"],
+        deliverables: [
+          "Brand Identity",
+          "Typography Guide",
+          "Logo & Brand Marks",
+          "Business Card Design",
+          "Flyer Mockups",
+          "Responsive UI (Mobile, Tablet, Desktop)",
+        ],
+      },
+
+      research: {
+        competitorAnalysis: {
+          overview: "",
+          competitors: [
+            {
+              name: "Co-Lab",
+              toneOfVoice: "Friendly, collaborative, and transparent — focuses on human connection and trust.",
+              mission: "To deliver agency-level quality without the overheads by connecting independent creatives and developers under one collaborative collective.",
+              positioning: "Small, UK-based digital collective targeting start-ups and SMEs seeking affordable yet professional creative and web solutions.",
+              visualStyle: "Clean and minimal, muted colour palette, strong grid-based layout, sans-serif typography conveying accessibility and simplicity.",
+              contentOffering: "Branding, web design and development, app design, SEO, and digital marketing strategy.",
+              strengths: [
+                "Flexible, collaborative model with a strong community ethos.",
+                "Approachable and transparent communication style.",
+                "Good balance between design and digital service capabilities."
+              ],
+              limitations: [
+                "Limited emphasis on advanced engineering and AI integration.",
+                "Small scale may restrict large enterprise engagements.",
+                "Focus on affordability may undermine perception of technical depth."
+              ]
+            },
+            {
+              name: "Selbey Anderson",
+              toneOfVoice: "Authoritative, strategic, and insight-driven — uses corporate language and polished presentation.",
+              mission: "To help ambitious brands solve complex business and marketing challenges through strategy, creativity, and innovation.",
+              positioning: "Multi-agency marketing and creative communications group serving enterprise and global clients seeking integrated brand transformation.",
+              visualStyle: "High-end corporate aesthetic — dark mode palette, serif and sans-serif combinations, structured typography, strong visual hierarchy.",
+              contentOffering: "Brand strategy, communications, digital marketing, creative campaigns, research, and innovation consulting.",
+              strengths: [
+                "Deep strategic expertise and research-driven approach.",
+                "Strong reputation and credibility across the creative and marketing sector.",
+                "Extensive resources through a multi-agency group model."
+              ],
+              limitations: [
+                "Less focus on technical execution or product engineering.",
+                "Less agile — slower to adapt to project-specific integration.",
+                "High cost structure limits appeal for mid-sized or smaller clients."
+              ]
+            },
+            {
+              name: "Stringo Media",
+              toneOfVoice: "Direct, performance-focused, and results-oriented — emphasizes efficiency and measurable outcomes.",
+              mission: "To empower businesses with data-driven digital marketing and web solutions that generate measurable growth and ROI.",
+              positioning: "Digital performance and media agency focusing on marketing automation, analytics, and content strategy for SMEs and mid-size clients.",
+              visualStyle: "Corporate yet approachable — bold accent colours (orange/blue), clean typography, and structured layout optimized for clarity and conversion.",
+              contentOffering: "Digital strategy, paid advertising, SEO, web design, social media, and analytics.",
+              strengths: [
+                "Strong focus on measurable business results and conversion optimization.",
+                "Combines creative and analytical disciplines effectively.",
+                "Streamlined site experience built for clarity and client reassurance."
+              ],
+              limitations: [
+                "Limited creative or brand identity work.",
+                "No visible emphasis on team integration or embedded collaboration.",
+                "Minimal technical or engineering capability beyond standard web and CMS builds."
+              ]
+            },
+            {
+              name: "Dina",
+              toneOfVoice: "Professional, technical, and consultancy-focused — prioritizes clarity and trust over emotion.",
+              mission: "To deliver integrated IT, cloud, and security solutions that empower digital transformation for modern enterprises.", 
+              positioning: "Established Swiss IT consultancy specializing in infrastructure, security, and enterprise technology transformation.",
+              visualStyle: "Clean and minimal corporate aesthetic — blue and white palette, geometric grid, modular interface reflecting engineering precision.",
+              contentOffering: "Cloud architecture, IT governance, cybersecurity, SAP integration, consulting, and infrastructure solutions.",
+              strengths: [
+                "High technical credibility and large-scale enterprise capability.",
+                "Strong focus on cloud, security, and infrastructure consulting.",
+                "Well-established reputation and experienced technical staff."
+              ],
+              limitations: [
+                "Lacks creative/UX focus or design-driven positioning.",
+                "Not oriented toward agile or embedded team models.",
+                "Service offering can feel rigid compared to dynamic startups."
+              ]
+            }
+        ],
+        },
+        additionalDocs: [
+          {
+            title: "Client Brief",
+            url: "https://drive.google.com/file/d/1dFFKOx07hApV-W9ht1q03RmpP1607EDd/preview",
+            type: "PDF",
+            description: "Outlines Ashe Magazine’s goals, target audience, and project requirements.",
+          },
+        ],
+        strategicInsights: [
+          {
+            title: "Opportunity for Human-Centric Branding",
+            insight: "Competitors like Co-Lab emphasize community and collaboration, showing a gap for brands that can combine strong creative design with a personable, trust-driven client experience."
+          },
+          {
+            title: "High-End Strategy Differentiation",
+            insight: "Selbey Anderson demonstrates that authoritative, insight-driven strategy is valued by enterprise clients. There is an opportunity to differentiate by combining strategic rigor with creative execution for mid-market clients."
+          },
+          {
+            title: "Technical Depth as a Market Gap",
+            insight: "Dina shows strong technical credibility but lacks UX/design focus. There’s an opportunity to offer seamless integration of technical solutions with user-centered design for clients seeking both reliability and experience-driven solutions."
+          },
+          {
+            title: "Brand Positioning Clarity",
+            insight: "Visual styles and tone of voice vary widely, from friendly and approachable to corporate and authoritative. Clear, consistent brand positioning that communicates both trust and capability can differentiate the offering in a crowded market."
+          }
+        ]
+
+      },
+
+      ideation: {
+        directions: [
+          {
+            name: "Direction 01 — Humanised Exploration",
+            description: 
+              "This direction takes an illustrative and creative approach to humanise a highly technical and metrics-driven industry. Using a forest motif, it metaphorically represents Incomplex guiding clients out of the confusion and complexity of their current workflows and into clarity and actionable solutions. The visual style is rich in detail and texture, creating an emotional connection with the audience, while the high-contrast colour palette of saturated oranges, cooler blues, and dark teals establishes energy and trust. Hero mockups for both mobile and desktop explore varied compositions and perspectives to reinforce approachability, warmth, and the idea of personal guidance, emphasizing that Incomplex bridges gaps in capability while remaining empathetic and relatable.",
+            images: [
+              "https://res.cloudinary.com/dfsmaylfo/image/upload/v1761652654/Desktop_hero_1_h08vrv.jpg",
+              "https://res.cloudinary.com/dfsmaylfo/image/upload/v1761652654/Mobile_hero_1_axilxr.jpg"
+            ],
+          },
+          {
+            name: "Direction 02 — Bridging the Gap",
+            description: 
+              "This direction takes a more literal and architectural approach, illustrating Incomplex as a bridge between client vision and desired reality. The motif features a large hand placing a cornerstone, symbolically connecting a small town to a large city — an aspirational visual metaphor for growth, scalability, and progress. The design is modern and structured, leveraging grid-based layouts, clean lines, and a high-contrast palette of saturated oranges and cooler blues to reinforce technical competence and forward-thinking ideals. Hero mockups for desktop and mobile explore spatial hierarchy and visual clarity, ensuring the narrative communicates precision, professionalism, and strategic impact. This direction positions the brand as authoritative and capable while remaining visually engaging and inspiring confidence in complex problem-solving.",
+            images: [
+              "https://res.cloudinary.com/dfsmaylfo/image/upload/v1761652655/Desktop_hero_2_yqlmdt.jpg",
+              "https://res.cloudinary.com/dfsmaylfo/image/upload/v1761652654/Mobile_hero_2_pi8xwz.jpg"
+            ],
+          }
+        ]
+      },  
+
+      deliverables: {
+        items: [
+          {
+            name: "Typography Guide",
+            description:
+              "Roboto Condensed and Roboto Light express technical precision and clarity.",
+            image:
+              "https://res.cloudinary.com/dfsmaylfo/image/upload/v1761754103/typography_guide_sa9wgm.png",
+            tags: ["Brand", "Typography"],
+          },
+          {
+            name: "Logo & Brand Marks",
+            description:
+              "Clean geometry and minimal forms are versatile. This logo suite allows for a wide variety of usages and expresses adaptability and InComplex's technical ethos.",
+            image:
+              "https://res.cloudinary.com/dfsmaylfo/image/upload/v1761754099/logo_suite_lvqqrl.png",
+            tags: ["Brand", "Identity"],
+          },
+          {
+            name: "Responsive UI — Mobile",
+            description:
+              "Compact layout prioritizing navigation ease and clarity for small screens.",
+            image:
+              "https://res.cloudinary.com/dfsmaylfo/image/upload/v1761754601/Screenshot_2025-10-29_at_16.16.24_kqg37c.png",
+            tags: ["Web", "UI"],
+          },
+          {
+            name: "Responsive UI — Tablet",
+            description:
+              "Optimized for touch while preserving desktop hierarchy and balance.",
+            image:
+              "https://res.cloudinary.com/dfsmaylfo/image/upload/v1761754758/Screenshot_2025-10-29_at_16.18.41_pqgfzz.png",
+            tags: ["Web", "Responsive"],
+          },
+          {
+            name: "Responsive UI — Desktop",
+            description:
+              "Illustrated full-bleed hero section with smooth motion transitions to convey sophistication and structure.",
+            image:
+              "https://res.cloudinary.com/dfsmaylfo/image/upload/v1761754467/Screenshot_2025-10-29_at_16.13.27_fnfp1j.png",
+            tags: ["Web", "UI"],
+          },
+          {
+            name: "Illustrated Graphics + Icons",
+            description:
+              "Playful graphics in a clean, minimal and cel-shaded style; to create a sense of warmth whilst maintaining the brand's modern aesthetic.",
+            image:
+              "https://res.cloudinary.com/dfsmaylfo/image/upload/v1761753116/Icons_and_graphics_cwctrm.png",
+            tags: ["Web", "UI"],
+          },
+        ],
+        links: [
+          {
+            name: "High Fidelity Prototype",
+            url: "https://1ncomplex.netlify.app/"
+          }
+        ],
+        summary: [
+          " Whilst both potential directions utilise illustration to humanise the brand and add an opproachaple and playful feel; We decided to pursue the more modern approach with the buildings and bridging the gap motif. In an era of AI and rapid change in the industry, being seen as forward thinking and adaptable is particularly important. This direction is far more in alignment with that messaging",
+          "I personally designed the user interface of the site (see the high fidelity prototype with partial functionality below). Designing it fully in Figma, then using AI to enhance with complex scroll animations and practical code to be used as reference for incomplex's development team. I also developed a logo suite, typography system and personally hand drew all of the icons and illustrations throughout the site using photoshop and adobe Illustrator.",
+        ],
+      },  
+
+      reflection: {
+        learnings:
+          "Reinforced the value of designing systems that express both clarity and accessibility.",
+        collaboration:
+          "Worked closely with the founder to align visual tone with messaging.",
+        constraints:
+          "Limited startup resources required lean, scalable design execution.",
+        finalOutcome:
+          "Delivered a comprehensive identity and website positioning Incomplex as a modern, trustworthy technical partner.",
+      },
+    },
+  },
 ];
 
-// --- Default export for convenience ---
+// --- Default export --- //
 export default optimizedProjects;
 
+// --- API Utility --- //
 export const OptimizedProjectsAPI = {
-  getAllProjects: async (): Promise<Project[]> => {
-    return new Promise((resolve) =>
-      setTimeout(() => resolve(optimizedProjects), 500)
-    );
-  },
+  getAllProjects: async (): Promise<Project[]> =>
+    new Promise((resolve) => setTimeout(() => resolve(optimizedProjects), 500)),
 
-  getProjectById: async (id: string): Promise<Project | null> => {
-    return new Promise((resolve) =>
+  getProjectById: async (id: string): Promise<Project | null> =>
+    new Promise((resolve) =>
       setTimeout(
         () => resolve(optimizedProjects.find((p) => p.id === id) ?? null),
         500
       )
-    );
-  },
+    ),
 
-  searchProjects: async (query: string): Promise<Project[]> => {
-    return new Promise((resolve) =>
+  searchProjects: async (query: string): Promise<Project[]> =>
+    new Promise((resolve) =>
       setTimeout(
         () =>
           resolve(
@@ -302,11 +662,10 @@ export const OptimizedProjectsAPI = {
           ),
         500
       )
-    );
-  },
+    ),
 
-  getProjectsByCategory: async (category: string): Promise<Project[]> => {
-    return new Promise((resolve) =>
+  getProjectsByCategory: async (category: string): Promise<Project[]> =>
+    new Promise((resolve) =>
       setTimeout(
         () =>
           resolve(
@@ -316,20 +675,13 @@ export const OptimizedProjectsAPI = {
           ),
         500
       )
-    );
-  },
+    ),
 
-  getProjectsByYear: async (year: string): Promise<Project[]> => {
-    return new Promise((resolve) =>
+  getProjectsByYear: async (year: string): Promise<Project[]> =>
+    new Promise((resolve) =>
       setTimeout(
-        () =>
-          resolve(
-            optimizedProjects.filter((p) =>
-              p.description.includes(year)
-            )
-          ),
+        () => resolve(optimizedProjects.filter((p) => p.year === year)),
         500
       )
-    );
-  },
+    ),
 };

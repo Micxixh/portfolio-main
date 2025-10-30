@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence, color } from "motion/react";
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, React } from "react";
 import {
   ArrowLeft,
   ExternalLink,
@@ -15,6 +15,10 @@ import BentoGrid from "./DeliverablesGrid";
 import ModalCloseButton from "./ModalCloseButton";
 import IdeationCarousel from "./IdeationCarousel";
 import { text } from "stream/consumers";
+import CompetitorCarouselModal from "./CompetitorCarouselModal";
+import PdfEmbedModal from "./PdfEmbedModal";
+import ImageModal from "./ImageModal";
+
 
 interface ProjectDetailProps {
   project: Project | null;
@@ -38,6 +42,12 @@ export default function ProjectDetail({
   const [expandedDeliverables, setExpandedDeliverables] = useState(new Set<number>());
   const [showComparisonModal, setShowComparisonModal] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [activeResearchModal, setActiveResearchModal] = useState<
+  null | { type: "carousel" | "pdf" | "image"; data?: any }
+>(null);
+
+
+
 
   // Memoize calculations to prevent re-renders
   const nextProject = useMemo(() => {
@@ -50,11 +60,22 @@ export default function ProjectDetail({
 
 
   // Optimized handlers
-  const handleNextProjectClick = useCallback(() => {
-    if (onNextProject) {
-      onNextProject();
-    }
-  }, [onNextProject]);
+const handleNextProjectClick = useCallback(() => {
+  // Smoothly scroll to top of the project detail container
+  const container = document.querySelector(".project-detail-container");
+  if (container) {
+    container.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  // Trigger the next project
+  if (onNextProject) {
+    onNextProject();
+  }
+}, [onNextProject]);
+
 
   const handleBackClick = useCallback(() => {
     if (onBackToProjects) {
@@ -93,6 +114,24 @@ export default function ProjectDetail({
 
     const [isMobile, setIsMobile] = useState(false);
   const summaries = projectData.deliverables?.summary || [];
+
+    const linkButtonStyle: React.CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+    cursor: "pointer",
+    padding: "var(--space-2) var(--space-4)",
+    border: "var(--border-width) solid var(--border-color)",
+    borderRadius: "0.25rem",
+    backgroundColor: "transparent",
+    fontFamily: "var(--font-family-inter)",
+    fontSize: "var(--text-sm)",
+    fontWeight: "var(--font-weight-medium)",
+    textTransform: "uppercase",
+    letterSpacing: "0.05em",
+    color: "var(--text-primary)",
+    textDecoration: "none",
+  };
 
 useEffect(() => {
   const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -506,35 +545,31 @@ useEffect(() => {
                 paddingInline: "var(--space-6)",
               }}
             >
-              {(projectData.research.strategicInsights &&
-              projectData.research.strategicInsights.length > 0
-                ? projectData.research.strategicInsights.map((insight, index) => ({
-                    title: `Insight 0${index + 1}`,
-                    description: insight,
-                    impact: "medium",
-                  }))
-                : [
-                    {
-                      title: "User Experience Gaps",
-                      description:
-                        projectData.research.keyFindings ||
-                        "User research revealed critical pain points in the current workflow and opportunities for streamlined interactions that reduce cognitive load.",
-                      impact: "high",
-                    },
-                    {
-                      title: "Competitive Positioning",
-                      description:
-                        "Analysis identified market opportunities for differentiation through clearer information architecture and more intuitive user flows.",
-                      impact: "medium",
-                    },
-                    {
-                      title: "Design Strategy Impact",
-                      description:
-                        projectData.research.designImplications ||
-                        "These insights directly informed our design principles of clarity, consistency, and efficiency, ensuring user needs remained central to all design decisions.",
-                      impact: "high",
-                    },
-                  ]
+              {(
+                projectData.research?.strategicInsights?.length > 0
+                  ? projectData.research.strategicInsights.map((insightObj, index) => ({
+                      title: insightObj.title || `Insight 0${index + 1}`,
+                      description: insightObj.insight,
+                    }))
+                  : [
+                      {
+                        title: "User Experience Gaps",
+                        description:
+                          projectData.research?.keyFindings ||
+                          "Research revealed pain points in current workflows and highlighted opportunities to streamline experiences through improved hierarchy and consistency.",
+                      },
+                      {
+                        title: "Competitive Positioning",
+                        description:
+                          "Competitor analysis identified differentiation opportunities around clarity, scalability, and visual cohesion in brand and UX systems.",
+                      },
+                      {
+                        title: "Design Strategy Impact",
+                        description:
+                          projectData.research?.designImplications ||
+                          "Findings directly shaped the design principles — simplicity, adaptability, and coherence — ensuring user and brand goals aligned across all touchpoints.",
+                      },
+                    ]
               ).map((insight, index) => (
                 <div
                   key={index}
@@ -542,8 +577,8 @@ useEffect(() => {
                     padding: "var(--space-4)",
                     backgroundColor: "#131313",
                     border: "var(--border-width) solid var(--border-color)",
-                    display: "flex",
                     borderRadius: "1rem",
+                    display: "flex",
                     flexDirection: "column",
                     justifyContent: "space-between",
                     height: "100%",
@@ -552,15 +587,15 @@ useEffect(() => {
                   <div>
                     <h6
                       style={{
-                        fontFamily: "var(--font-family-roboto-mono)",
-                        fontSize: "var(--text-base)",
-                        fontWeight: "var(--font-weight-normal)",
-                        color: "#ffffff",
+                        color:"white",
                         marginBottom: "var(--space-2)",
+                        paddingBottom: "var(--space-2)",
+                        borderBottom: "solid 1px white",
                       }}
                     >
                       {insight.title}
                     </h6>
+
                     <p
                       style={{
                         fontFamily: "var(--font-family-roboto-mono)",
@@ -574,108 +609,109 @@ useEffect(() => {
                       {insight.description}
                     </p>
                   </div>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-family-roboto-mono)",
-                      fontSize: "var(--text-xs)",
-                      color:
-                        insight.impact === "high"
-                          ? "#ffffff"
-                          : insight.impact === "medium"
-                          ? "#cccccc"
-                          : "#999999",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.05em",
-                      alignSelf: "flex-end",
-                      marginTop: "var(--space-2)",
-                    }}
-                  >
-                    {insight.impact} Impact
-                  </span>
                 </div>
               ))}
+
+
             </div>
 
-            {/* Documentation Links - Compact, no heading */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                flexWrap: "wrap",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "var(--space-3)",
-                borderBottom: "var(--border-width) solid var(--border-color)",
-                paddingBottom: "var(--space-6)",
-              }}
-            >
-              <motion.a
-                href={
-                  projectData?.research.competitorAnalysisLink ||
-                  "https://docs.google.com/spreadsheets/d/1example-research-document-link/edit"
+          {/* Documentation Links */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "var(--space-3)",
+              borderBottom: "var(--border-width) solid var(--border-color)",
+              paddingBottom: "var(--space-6)",
+            }}
+          >
+            {/* Competitor Analysis */}
+            {projectData.research.competitorAnalysis && (
+              <motion.button
+                onClick={() =>
+                  setActiveResearchModal({
+                    type: "carousel",
+                    data: projectData.research.competitorAnalysis,
+                  })
                 }
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  cursor: "pointer",
-                  padding: "var(--space-2) var(--space-4)",
-                  border: "var(--border-width) solid var(--border-color)",
-                  borderRadius: "0.25rem",
-                  backgroundColor: "transparent",
-                  fontFamily: "var(--font-family-inter)",
-                  fontSize: "var(--text-sm)",
-                  fontWeight: "var(--font-weight-medium)",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                  color: "var(--text-primary)",
-                  textDecoration: "none",
-                }}
-                whileHover={{
-                  x: 4,
-                  transition: { duration: 0.2, ease: "easeOut" },
-                }}
+                style={linkButtonStyle}
+                whileHover={{ x: 4, transition: { duration: 0.2, ease: "easeOut" } }}
               >
                 <span>Competitor Analysis</span>
                 <ExternalLink size={16} />
-              </motion.a>
+              </motion.button>
+            )}
 
-              <motion.a
-                href={
-                  projectData?.research.audienceResearchLink ||
-                  "https://docs.google.com/spreadsheets/d/1example-research-document-link/edit"
+            {/* Audience Research */}
+            {projectData.research.audienceResearchLink && (
+              <motion.button
+                onClick={() =>
+                  setActiveResearchModal({
+                    type: "pdf",
+                    data: projectData.research.audienceResearchLink,
+                  })
                 }
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  cursor: "pointer",
-                  padding: "var(--space-2) var(--space-4)",
-                  border: "var(--border-width) solid var(--border-color)",
-                  borderRadius: "0.25rem",
-
-                  backgroundColor: "transparent",
-                  fontFamily: "var(--font-family-inter)",
-                  fontSize: "var(--text-sm)",
-                  fontWeight: "var(--font-weight-medium)",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                  color: "var(--text-primary)",
-                  textDecoration: "none",
-                }}
-                whileHover={{
-                  x: 4,
-                  transition: { duration: 0.2, ease: "easeOut" },
-                }}
+                style={linkButtonStyle}
+                whileHover={{ x: 4, transition: { duration: 0.2, ease: "easeOut" } }}
               >
                 <span>Audience Research</span>
                 <ExternalLink size={16} />
-              </motion.a>
-            </div>
+              </motion.button>
+            )}
+
+            {/* Additional Docs */}
+            {projectData.research.additionalDocs?.map((doc, i) => (
+              <motion.button
+                key={i}
+                onClick={() =>
+                  setActiveResearchModal({
+                    type: doc.type === "PDF" ? "pdf" : "image",
+                    data: doc,
+                  })
+                }
+                style={linkButtonStyle}
+                whileHover={{ x: 4, transition: { duration: 0.2, ease: "easeOut" } }}
+              >
+                <span>{doc.title}</span>
+                <ExternalLink size={16} />
+              </motion.button>
+            ))}
+
+            <AnimatePresence>
+            {activeResearchModal?.type === "carousel" && (
+              <CompetitorCarouselModal
+                competitors={activeResearchModal.data.competitors}
+                overview={activeResearchModal.data.overview}
+                documentLink={activeResearchModal.data.documents?.[0]?.url}
+                onClose={() => setActiveResearchModal(null)}
+              />
+            )}
+
+            {activeResearchModal?.type === "pdf" && (
+              <PdfEmbedModal
+                url={
+                  typeof activeResearchModal.data === "string"
+                    ? activeResearchModal.data
+                    : activeResearchModal.data.url
+                }
+                onClose={() => setActiveResearchModal(null)}
+              />
+            )}
+
+            {activeResearchModal?.type === "image" && (
+              <ImageModal
+                src={activeResearchModal.data.url}
+                title={activeResearchModal.data.title}
+                onClose={() => setActiveResearchModal(null)}
+              />
+            )}
+            
+          </AnimatePresence>
+
+          </div>
+
           </motion.section>
        </motion.section>
 

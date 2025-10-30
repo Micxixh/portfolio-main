@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { color, motion, transform, vw } from "framer-motion";
+import React, { useState, useRef, useEffect,useLayoutEffect } from "react";
+import {motion, useMotionValue, useTransform, useAnimationFrame} from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Direction {
@@ -32,7 +32,7 @@ export default function IdeationCarousel({ directions }: IdeationCarouselProps) 
           // 📱 --- MOBILE LAYOUT ---
           <div
             key={index}
-            className="w-full border border-neutral-200 rounded-xl bg-white overflow-hidden"
+            className="w-full border border-neutral-200 rounded-xl bg-white"
             style={{ marginBottom: "1.5rem" }}
           >
             {direction.images && direction.images.length > 0 && (
@@ -103,227 +103,279 @@ export default function IdeationCarousel({ directions }: IdeationCarouselProps) 
 
 function DirectionCarousel({ images }: { images: string[] }) {
   const [current, setCurrent] = useState(0);
-  const [slideWidth, setSlideWidth] = useState(0);
-  const [ratios, setRatios] = useState<number[]>([]);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
+  const [slideWidth, setSlideWidth] = useState(0);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [paddingX, setPaddingX] = useState(0);
+  const [isHovered, setIsHovered] = useState(false); // track hover state
 
   const total = images.length;
+  const gap = 80;
 
-  const next = () => setCurrent((prev) => (prev + 1) % total);
-  const prev = () => setCurrent((prev) => (prev - 1 + total) % total);
+  const next = () => setCurrent((p) => (p + 1) % total);
+  const prev = () => setCurrent((p) => (p - 1 + total) % total);
 
-  // measure slide width
+  // Measure layout sizes
+  useLayoutEffect(() => {
+    const measure = () => {
+      if (!wrapperRef.current || !trackRef.current) return;
+      const firstSlide = trackRef.current.querySelector(".slide") as HTMLElement | null;
+      if (!firstSlide) return;
+
+      const sWidth = firstSlide.offsetWidth;
+      const cWidth = wrapperRef.current.offsetWidth;
+      setSlideWidth(sWidth);
+      setContainerWidth(cWidth);
+      setPaddingX(cWidth / 2 - sWidth / 2);
+    };
+
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [images]);
+
+  // Arrow key navigation for desktop
   useEffect(() => {
-    const updateWidth = () => {
-      if (!trackRef.current) return;
-      const firstSlide = trackRef.current.querySelector(".slide") as HTMLElement;
-      if (firstSlide) {
-        setSlideWidth(firstSlide.offsetWidth);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isHovered) return; // only respond if hovered
+      if (e.key === "ArrowRight") {
+        next();
+      } else if (e.key === "ArrowLeft") {
+        prev();
       }
     };
 
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, [images]);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isHovered]);
 
-  // load ratios
-  useEffect(() => {
-    const loadRatios = async () => {
-      const promises = images.map(
-        (src) =>
-          new Promise<number>((resolve) => {
-            const img = new Image();
-            img.onload = () => resolve(img.width / img.height);
-            img.onerror = () => resolve(1);
-            img.src = src;
-          })
-      );
-      const results = await Promise.all(promises);
-      setRatios(results);
-    };
-    loadRatios();
-  }, [images]);
+  const getTranslateX = () => {
+    if (!slideWidth || !containerWidth) return 0;
+    const step = slideWidth + gap;
+    return -(current * step);
+  };
 
   return (
     <div
-      className="relative flex items-center justify-center w-full overflow-hidden border"
-      style={{
-        backgroundColor: "#000",
-        borderColor: "var(--border-color)",
-        position: "relative",
-      }}
+      ref={wrapperRef}
+      className="relative flex items-center justify-start w-full overflow-hidden"
+      style={{ height: "100vh", backgroundColor: "#000", position: "relative" }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      {/* 🔥 Background Blur Layer */}
-      <div
+      {/* 🌌 Background */}
+      <motion.div
+        key={current}
         className="absolute inset-0 z-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
         style={{
           backgroundImage: `url(${images[current]})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           filter: "blur(30px) brightness(0.4)",
-          transform: "scale(1.1)",
-          transition: "background-image 0.8s ease-in-out",
+          transform: "scale(1.05)",
         }}
       />
 
-      {/* 🖼️ Carousel Track (content on top of blur) */}
+      {/* 🖼️ Track */}
       <motion.div
         ref={trackRef}
-        className="flex gap-[2px] z-10"
-        animate={slideWidth ? { x: -current * slideWidth + slideWidth } : {}}
-        transition={{ duration: 0.6, ease: "easeInOut" }}
-        style={{ gap: "6rem", padding: "1rem 0" }}
+        className="flex items-center z-10"
+        animate={{ x: getTranslateX() }}
+        transition={{ duration: 0.7, ease: [0.25, 1, 0.35, 1] }}
+        style={{
+          gap: `${gap}px`,
+          alignItems: "center",
+          willChange: "transform",
+          paddingLeft: `${paddingX}px`,
+          paddingRight: `${paddingX}px`,
+        }}
       >
-        {images.map((image, i) => {
-          const ratio = ratios[i];
-          const isLandscape = ratio && ratio > 1;
-          return (
-            <div
-              key={i}
-              className={`slide flex-shrink-0 transition-all duration-700 ${
-                i === current ? "scale-100 opacity-100" : "scale-95 opacity-70"
-              }`}
+      {images.map((src, i) => (
+          <div
+            key={i}
+            className={`slide flex-shrink-0 transition-transform duration-500 ${
+              i === current ? "scale-100 opacity-100" : "scale-95 opacity-70"
+            }`}
+            style={{
+              width: "min(55vw, 950px)",
+              height: "80vh",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer", // indicate clickable
+            }}
+            onClick={() => setCurrent(i)} // ⬅️ jump to clicked slide
+          >
+            <img
+              src={src}
+              alt={`Slide ${i + 1}`}
               style={{
-                width: "100vw",
-                maxWidth: "50vw",
-                height: "auto",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+                borderRadius: "0.75rem",
               }}
-            >
-              <img
-                src={image}
-                alt={`Slide ${i + 1}`}
-                style={{
-                  borderRadius: "0.5rem",
-                  objectFit: "cover",
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-                  backgroundColor: "#111",
-                  width: "100%", 
-                  height: "auto", 
-                  maxWidth: "900px",
-                  zIndex:"10"
-                }}
-              />
-            </div>
-          );
-        })}
+            />
+          </div>
+        ))}
+
       </motion.div>
 
-      {/* ⬅️➡️ Navigation Buttons (unchanged) */}
+      {/* ⬅️ Prev */}
       <button
         onClick={prev}
         aria-label="Previous"
-        className="absolute left-0 top-0 h-full flex items-center justify-center border-r
-                   bg-black/60 hover:bg-black/80 transition-all w-12 sm:w-16"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.8)", width: "4rem", zIndex:"50" }}
+        className="absolute left-0 top-0 h-full flex items-center justify-center bg-black/60 hover:bg-black/80 transition-all"
+        style={{
+          width: 64,
+          zIndex: 50,
+          borderRadius: "0.75rem",
+          backgroundColor: "#000000ff",
+          color: "white",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+        }}
       >
-        <ChevronLeft className="w-8 h-8 text-white" style={{ color: "white", zIndex:"50" }} />
+        <ChevronLeft className="w-8 h-8 text-white" />
       </button>
+
+      {/* ➡️ Next */}
       <button
         onClick={next}
         aria-label="Next"
-        className="absolute right-0 top-0 h-full flex items-center justify-center border-l
-                   bg-black/60 hover:bg-black/80 transition-all w-12 sm:w-16"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.8)", width: "4rem", zIndex:"50" }}
+        className="absolute right-0 top-0 h-full flex items-center justify-center bg-black/60 hover:bg-black/80 transition-all"
+        style={{
+          width: 64,
+          zIndex: 50,
+          borderRadius: "0.75rem",
+          backgroundColor: "#000000ff",
+          color: "white",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+        }}
       >
-        <ChevronRight className="w-8 h-8 text-white" style={{ color: "white", zIndex:"50"}} />
+        <ChevronRight className="w-8 h-8 text-white" />
       </button>
     </div>
   );
 }
 
 
-  function MobileCarousel({ images }: { images: string[] }) {
-  const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  const handleScroll = (direction: "left" | "right") => {
-    if (scrollRef.current) {
-      const container = scrollRef.current;
-      const scrollAmount = container.clientWidth; // use container width (viewport equivalent)
-      container.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
+
+
+
+
+function MobileCarousel({ images }: { images: string[] }) {
+  const [current, setCurrent] = useState(0);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const x = useMotionValue(0);
+  const [maxDrag, setMaxDrag] = useState(0);
+
+  // Measure drag range
+  useEffect(() => {
+    const measure = () => {
+      if (containerRef.current && trackRef.current) {
+        const containerWidth = containerRef.current.offsetWidth;
+        const trackWidth = trackRef.current.scrollWidth;
+        const max = Math.max(trackWidth - containerWidth, 0);
+        setMaxDrag(max);
+      }
+    };
+    // Delay measurement to allow layout to render
+    const timeout = setTimeout(measure, 50);
+    window.addEventListener("resize", measure);
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener("resize", measure);
+    };
+  }, [images]);
+
+  // Update background based on drag progress
+  useAnimationFrame(() => {
+    if (maxDrag > 0) {
+      const progress = Math.abs(x.get()) / maxDrag;
+      const index = Math.min(images.length - 1, Math.floor(progress * images.length));
+      setCurrent(index);
     }
-  };
+  });
 
   return (
     <div
+      ref={containerRef}
+      className="relative w-full overflow-hidden"
       style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        width: "100%",
+        height: "70vh",
+        backgroundColor: "#000",
+        position: "relative",
+        touchAction: "pan-y",
       }}
     >
-      <div
-        className="w-full flex flex-col items-center bg-black"
+      {/* 🌫 Blurred background */}
+      <motion.div
+        key={current}
+        className="absolute inset-0 z-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4 }}
         style={{
-          overflowX: "auto",
-          scrollSnapType: "x mandatory",
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
+          backgroundImage: `url(${images[current]})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "blur(25px) brightness(0.5)",
+          transform: "scale(1.05)",
         }}
-        ref={scrollRef}
-      >
-        <div
-          className="flex snap-x snap-mandatory"
-          style={{
-            scrollBehavior: "smooth",
-            WebkitOverflowScrolling: "touch",
-            width: "300vw",
-            transform: "translateX(100vw)",
-            overflow: "visible",
-          }}
-        >
-          {images.map((image, i) => (
-            <div
-              key={i}
-              className="flex-shrink-0 h-full snap-start flex justify-center items-center"
-              style={{ width: "100vw" }} // ensure each image takes full viewport width
-            >
-              <img
-                src={image}
-                alt={`Slide ${i + 1}`}
-                style={{
-                  width: "100vw",
-                  height: "auto",
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-                  backgroundColor: "#111",
-                }}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
+      />
 
-      {/* Buttons */}
-      <div style={{ display: "flex", width: "100vw" }}>
-        <div onClick={() => handleScroll("left")}>
-          <ChevronLeft
-            className="w-full h-8 text-white cursor-pointer"
+      {/* 🖼️ Image Track */}
+      <motion.div
+        ref={trackRef}
+        className="flex gap-4 z-10"
+        drag="x"
+        dragConstraints={{ left: -maxDrag, right: 0 }}
+        dragElastic={0.1}
+        style={{
+          x,
+          overflowX:"visible",
+          cursor: "grab",
+          alignItems: "center",
+          padding: "5vw",
+          zIndex: 10,
+        }}
+        whileTap={{ cursor: "grabbing" }}
+      >
+        {images.map((src, i) => (
+          <motion.div
+            key={i}
+            className="flex-shrink-0 flex justify-center items-center"
             style={{
-              width: "50vw",
-              backgroundColor: "black",
-              color: "white",
-              borderRight: "1px solid rgba(255, 255, 255, 0.5)",
+              width: "80vw",
+              height: "60vh",
+              borderRadius: "1rem",
+              overflow: "hidden",
+              flex: "0 0 auto",
+              position: "relative",
+              zIndex: 10,
             }}
-          />
-        </div>
-        <div onClick={() => handleScroll("right")}>
-          <ChevronRight
-            className="w-full h-8 text-white cursor-pointer"
-            style={{
-              width: "50vw",
-              backgroundColor: "black",
-              color: "white",
-            }}
-          />
-        </div>
-      </div>
+          >
+            <img
+              src={src}
+              alt={`Slide ${i + 1}`}
+              className="object-contain w-full h-full"
+              style={{
+                borderRadius: "0.75rem",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+              }}
+            />
+          </motion.div>
+        ))}
+      </motion.div>
     </div>
   );
 }
+
+
+

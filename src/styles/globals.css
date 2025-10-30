@@ -768,11 +768,6 @@ html {
     overflow: visible !important;
   }
 
-  /* Mobile Project Detail Images - ensure all use auto height */
-  [data-project-detail] img,
-  .project-detail-container img {
-    height: auto !important;
-  }
 
   /* Mobile viewport adjustments */
   .mobile-viewport {

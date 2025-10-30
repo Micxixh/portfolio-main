@@ -1840,7 +1840,7 @@ html {
   }
 
   [data-project-detail] img, .project-detail-container img {
-    height: auto !important;
+    height: auto ;
   }
 
   .mobile-viewport {
