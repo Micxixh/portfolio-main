@@ -352,7 +352,7 @@ export default function MainContent({
             }}
           >
             <ImageWithFallback
-              src="https://i.postimg.cc/kXyNHw61/image.png"
+              src="https://res.cloudinary.com/dfsmaylfo/image/upload/v1762170294/profile_image_ldri2e.png"
               alt="Micaiah Douglas Portrait"
               className="w-full h-full object-cover"
               style={{
@@ -672,7 +672,7 @@ export default function MainContent({
         }}
       >
         <ImageWithFallback
-          src="https://i.postimg.cc/kXyNHw61/image.png"
+          src="https://res.cloudinary.com/dfsmaylfo/image/upload/v1762170294/profile_image_ldri2e.png"
           alt="Micaiah Douglas Portrait"
           className="w-full h-full object-cover"
           style={{

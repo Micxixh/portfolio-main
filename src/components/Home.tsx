@@ -142,7 +142,7 @@ export default function Home({
         transition={{ duration: 0.6, ease: "easeInOut" }}
       >
         <ImageWithFallback
-          src="https://res.cloudinary.com/dfsmaylfo/image/upload/v1760560538/portrait_r8jllf.png"
+          src="https://res.cloudinary.com/dfsmaylfo/image/upload/v1762170294/profile_image_ldri2e.png"
           alt="Micaiah Douglas Portrait"
           className="w-full h-full object-cover"
           style={{
