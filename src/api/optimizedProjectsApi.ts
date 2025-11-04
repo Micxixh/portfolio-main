@@ -334,7 +334,7 @@ export const optimizedProjects: Project[] = [
             description:
               "Elegant serif wordmark and star motif represent creativity, structure, and ambition. Flexible across contexts.",
             image:
-              "https://res.cloudinary.com/dfsmaylfo/image/upload/v1760350469/Logo_Suite_gw04fi.jpg",
+              "https://res.cloudinary.com/dfsmaylfo/image/upload/v1762198851/Logo_Suite_qrmybi.jpg",
             tags: ["Brand", "Guidelines"],
           },
           {
